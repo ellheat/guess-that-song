@@ -27,8 +27,8 @@ const getSingleCharacter = () => {
 
 export const getCharacters = () => new Promise<void>(resolve => {
   const animals = <string[]>characters.characters;
-  const adjectives = characters.adjectives;
-  const colors = characters.colors;
+  const adjectives = <string[]>characters.adjectives;
+  const colors = <string[]>characters.colors;
 
   animals.forEach(animal => {
     const randomColor = colors[random(0, colors.length - 1)];
@@ -45,7 +45,7 @@ export const getCharacters = () => new Promise<void>(resolve => {
   resolve();
 });
 
-const characterPicker = () => {
+export const characterPicker = () => {
   const randomNumberOfCharacter = random(0, CHARACTERS.length - 1);
   getSingleCharacter();
 
