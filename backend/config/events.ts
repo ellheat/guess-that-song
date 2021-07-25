@@ -1,7 +1,4 @@
 export enum Events {
   Connection = 'connection',
+  Disconnect = 'disconnect',
 }
-
-// module.exports = {
-//   events: Events,
-// };

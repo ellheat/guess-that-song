@@ -6,6 +6,7 @@ export type AppComponentProps = {
 };
 
 export const AppComponent = ({ children }: AppComponentProps) => {
+  console.log('app');
   return (
     <Fragment>
       <GlobalStyle />

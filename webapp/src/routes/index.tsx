@@ -5,7 +5,7 @@ import { ROUTES } from './app.constants';
 import { NotFound } from './notFound';
 import { Home } from './home';
 
-export default () => {
+export const Main = () => {
   return (
     <App>
       <Switch>
