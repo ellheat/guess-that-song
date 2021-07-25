@@ -22,14 +22,14 @@ io.on(Events.Connection, (socket: Socket) => {
   const character = characterPicker();
   const id = socket.id;
 
-  addUser(character, id);
+  const player = addUser(character, id);
   const usersList = getUserList();
 
-  console.log(colors.info(`${character.name} has been joined`));
+  console.log(colors.info(`${player.name} has been joined`));
   console.log(colors.info(`users: ${usersList.length}`))
 
+  socket.emit(Events.Connection, player);
   io.emit(Events.PlayersList, usersList);
-  socket.emit(Events.Connection, `${character.name} has been joined`);
 
   socket.on(Events.Disconnect, () => {
     removeUser(id).then((characterName) => {

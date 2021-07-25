@@ -1,26 +1,47 @@
-import React, { useEffect } from 'react';
-import { Socket } from 'socket.io-client';
+import React, { useEffect, useState } from 'react';
 
 import { Container } from './home.styles';
 import { socket } from '../../utils/socket';
+import { Events } from '../../config';
 
+type PlayerType = {
+  id: string;
+  name: string;
+  color: any;
+  points: number;
+  correctAnswers: number;
+  roundsWon: number;
+}
 
 export const Home = () => {
-  console.log('home');
+  const [playerInfo, setPlayerInfo] = useState<PlayerType>();
+  const [players, setPlayers] = useState<PlayerType[]>([]);
+
   useEffect(() => {
-    socket.on('connection', (message: Socket) => {
-      console.log(message);
+    socket.on(Events.Connection, (player: PlayerType) => {
+      setPlayerInfo(player);
+    });
+
+    socket.on(Events.PlayersList, (list: PlayerType[]) => {
+      setPlayers(list);
     });
 
     return () => {
-      console.log('disconnect');
       socket.disconnect();
     };
-  }, [])
+  }, []);
+
+  console.log('playerInfo', playerInfo);
 
   return (
     <Container>
-      Guess That Song
+      <div>{playerInfo?.name}</div>
+      Players list ({players.length}):
+      <ul>
+        {players.map((player) => (
+          <li key={player.id}>{player.name}</li>
+        ))}
+      </ul>
     </Container>
   );
 }

@@ -10,6 +10,7 @@ export const addUser = (character: CharacterType, id: string) => {
   const user = <UserType>Object.assign(character, { id })
   user.id = id;
   USER_LIST.push(user);
+  return user;
 };
 
 export const removeUser = (id: string) => new Promise((resolve) => {
