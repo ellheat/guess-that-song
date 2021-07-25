@@ -1,7 +1,7 @@
 const random = require('lodash.random');
 const characters = require('../json/characters');
 
-type CharactersType = {
+export type CharacterType = {
   name: string;
   color: any;
   points: number;
@@ -9,7 +9,7 @@ type CharactersType = {
   roundsWon: number;
 }
 
-const CHARACTERS: CharactersType[] = [];
+const CHARACTERS: CharacterType[] = [];
 
 const getSingleCharacter = () => {
   const animal = characters.characters[random(0, characters.length - 1)];
