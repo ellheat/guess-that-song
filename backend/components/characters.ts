@@ -3,7 +3,7 @@ const characters = require('../json/characters');
 
 export type CharacterType = {
   name: string;
-  color: any;
+  color: string;
   points: number;
   correctAnswers: number;
   roundsWon: number;

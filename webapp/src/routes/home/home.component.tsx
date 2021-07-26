@@ -3,15 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Container } from './home.styles';
 import { socket } from '../../utils/socket';
 import { Events } from '../../config';
-
-type PlayerType = {
-  id: string;
-  name: string;
-  color: any;
-  points: number;
-  correctAnswers: number;
-  roundsWon: number;
-}
+import { PlayersList } from '../../components/playersList';
+import { PlayerType } from '../../types';
+import { PlayerInfo } from '../../components/playerInfo';
 
 export const Home = () => {
   const [playerInfo, setPlayerInfo] = useState<PlayerType>();
@@ -31,17 +25,10 @@ export const Home = () => {
     };
   }, []);
 
-  console.log('playerInfo', playerInfo);
-
   return (
     <Container>
-      <div>{playerInfo?.name}</div>
-      Players list ({players.length}):
-      <ul>
-        {players.map((player) => (
-          <li key={player.id}>{player.name}</li>
-        ))}
-      </ul>
+      <PlayerInfo data={playerInfo} />
+      <PlayersList players={players} />
     </Container>
   );
 }
