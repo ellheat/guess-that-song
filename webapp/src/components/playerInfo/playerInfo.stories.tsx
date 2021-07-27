@@ -11,7 +11,10 @@ export default {
 
 const Template: ComponentStory<typeof PlayerInfo> = (args) => <PlayerInfo {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {
+export const Data = Template.bind({});
+Data.args = {
   data: player(),
 };
+
+export const NoData = Template.bind({});
+NoData.args = {};
