@@ -4,50 +4,33 @@ const characters = require('../json/characters');
 export type CharacterType = {
   name: string;
   color: string;
-  points: number;
-  correctAnswers: number;
-  roundsWon: number;
 }
 
-const CHARACTERS: CharacterType[] = [];
+export class Characters {
+  private list;
 
-const getSingleCharacter = () => {
-  const animal = characters.characters[random(0, characters.length - 1)];
-  const adjective = characters.adjectives[random(0, characters.adjectives - 1)];
-  const color = characters.colors[random(0, characters.colors - 1)];
+  constructor() {
+    this.list = new Array<CharacterType>();
+  }
 
-  CHARACTERS.push({
-    name: `${adjective} ${animal}`,
-    color: color,
-    points: 0,
-    correctAnswers: 0,
-    roundsWon: 0,
-  });
-};
+  createCharactersList = () => {
+    const animals = <string[]>characters.characters;
+    const adjectives = <string[]>characters.adjectives;
+    const colors = <string[]>characters.colors;
 
-export const getCharacters = () => new Promise<void>(resolve => {
-  const animals = <string[]>characters.characters;
-  const adjectives = <string[]>characters.adjectives;
-  const colors = <string[]>characters.colors;
+    animals.forEach(animal => {
+      const randomColor = colors[random(0, colors.length - 1)];
+      const randomAdjective = adjectives[random(0, adjectives.length - 1)];
 
-  animals.forEach(animal => {
-    const randomColor = colors[random(0, colors.length - 1)];
-    const randomAdjective = adjectives[random(0, adjectives.length - 1)];
-
-    CHARACTERS.push({
-      name: `${randomAdjective} ${animal}`,
-      color: randomColor,
-      points: 0,
-      correctAnswers: 0,
-      roundsWon: 0,
+      this.list.push({
+        name: `${randomAdjective} ${animal}`,
+        color: randomColor,
+      });
     });
-  });
-  resolve();
-});
+  }
 
-export const characterPicker = () => {
-  const randomNumberOfCharacter = random(0, CHARACTERS.length - 1);
-  getSingleCharacter();
-
-  return CHARACTERS.splice(randomNumberOfCharacter, 1)[0];
-};
+  getRandomCharacter = () => {
+    const randomNumber = random(0, this.list.length - 1);
+    return this.list.splice(randomNumber, 1)[0];
+  };
+}

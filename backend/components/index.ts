@@ -1,2 +1,2 @@
 export * from './characters';
-export * from './users';
+export * from './players';
