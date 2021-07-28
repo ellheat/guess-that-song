@@ -1,26 +1,34 @@
-import React, { useEffect } from 'react';
-import { Socket } from 'socket.io-client';
+import React, { useEffect, useState } from 'react';
 
 import { Container } from './home.styles';
 import { socket } from '../../utils/socket';
-
+import { Events } from '../../config';
+import { PlayersList } from '../../components/playersList';
+import { PlayerType } from '../../types';
+import { PlayerInfo } from '../../components/playerInfo';
 
 export const Home = () => {
-  console.log('home');
+  const [playerInfo, setPlayerInfo] = useState<PlayerType>();
+  const [players, setPlayers] = useState<PlayerType[]>([]);
+
   useEffect(() => {
-    socket.on('connection', (message: Socket) => {
-      console.log(message);
+    socket.on(Events.Connection, (player: PlayerType) => {
+      setPlayerInfo(player);
+    });
+
+    socket.on(Events.PlayersList, (list: PlayerType[]) => {
+      setPlayers(list);
     });
 
     return () => {
-      console.log('disconnect');
       socket.disconnect();
     };
-  }, [])
+  }, []);
 
   return (
     <Container>
-      Guess That Song
+      <PlayerInfo data={playerInfo} />
+      <PlayersList players={players} />
     </Container>
   );
 }
