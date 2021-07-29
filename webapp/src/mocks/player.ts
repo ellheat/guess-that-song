@@ -1,4 +1,5 @@
 import * as faker from 'faker';
+import { PlayerStatus } from '../types';
 
 export const player = () => ({
   id: faker.datatype.uuid(),
@@ -7,4 +8,5 @@ export const player = () => ({
   points: faker.datatype.number(),
   correctAnswers: faker.datatype.number(),
   roundsWon: faker.datatype.number(),
+  status: Object.values(PlayerStatus)[Math.floor(Math.random() * 2)],
 });

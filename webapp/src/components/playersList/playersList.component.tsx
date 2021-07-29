@@ -13,7 +13,7 @@ export const PlayersList = ({ players }: PlayersListProps) => {
       <Header>Players list({players.length}) :</Header>
       <List>
         {players.map((player: PlayerType) => (
-          <Item key={player.id} color={player.color}>{player.name}</Item>
+          <Item key={player.id} color={player.color}>{player.name} - {player.status}</Item>
         ))}
       </List>
     </Container>

@@ -1,1 +1,2 @@
-export { gameMachine } from './gameMachine';
+export * from './gameMachine';
+export * from './playerMachine';

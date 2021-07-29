@@ -1,15 +1,23 @@
 import { createMachine } from "xstate";
 
+export enum GameStates {
+  Lobby = 'lobby',
+  Quiz = 'quiz',
+  Leaderboard = 'leaderboard',
+}
+
 export const gameMachine = createMachine({
   id: "game",
-  initial: "start",
+  initial: GameStates.Lobby,
   states: {
-    start: {
-      on: { NEXT: "lobby" },
+    [GameStates.Lobby]: {
+      on: { NEXT: GameStates.Quiz },
     },
-    lobby: {
-      on: { NEXT: "game" },
+    [GameStates.Quiz]: {
+      on: { NEXT: GameStates.Leaderboard },
     },
-    game: {},
+    [GameStates.Leaderboard]: {
+      on: { NEXT: GameStates.Lobby },
+    },
   },
 });
