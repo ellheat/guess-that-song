@@ -10,8 +10,8 @@ export const Home = () => {
 
   return (
     <Container>
-      { !isLocalhost && <Game /> }
-      { isLocalhost && <Player /> }
+      { isLocalhost && <Game /> }
+      { !isLocalhost && <Player /> }
     </Container>
   );
 }

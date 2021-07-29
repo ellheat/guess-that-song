@@ -3,10 +3,11 @@ import { useMachine } from "@xstate/react";
 
 import { socket } from '../../../utils/socket';
 import { Container } from './game.styles';
-import { gameMachine } from '../../../machines';
+import { gameMachine, GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
 import { Events } from '../../../config/events';
-import { PlayersList } from '../../../components/playersList';
+import { Wrapper } from '../player/player.styles';
+import { Lobby } from '../../../states/lobby';
 
 
 export const Game = () => {
@@ -24,8 +25,10 @@ export const Game = () => {
   }, []);
 
   return (
-    <Container>
-      <PlayersList players={players} />
-    </Container>
+    <Wrapper>
+      <Container>
+        {current.value === GameStates.Lobby && <Lobby list={players} />}
+      </Container>
+    </Wrapper>
   );
 }

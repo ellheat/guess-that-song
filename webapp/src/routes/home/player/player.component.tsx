@@ -7,7 +7,7 @@ import { playerMachine, PlayerStates } from '../../../machines';
 import { PlayerType } from '../../../types';
 import { PlayerEvents } from '../../../config/events';
 import { PlayerInfo } from '../../../components/playerInfo';
-import { Lobby } from '../../../states/lobby';
+import { PlayerLobby } from '../../../states/playerLobby';
 
 
 export const Player = () => {
@@ -30,7 +30,7 @@ export const Player = () => {
     <Wrapper>
       <PlayerInfo data={playerData} />
       <Container>
-        {current.value === PlayerStates.Lobby && <Lobby isPlayerReady={playerData?.isReady} />}
+        {current.value === PlayerStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
       </Container>
     </Wrapper>
   );
