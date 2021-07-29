@@ -1,8 +1,12 @@
 export enum Events {
   Connection = 'connection',
   Disconnect = 'disconnect',
-  AddPlayer = 'addPlayer',
-  PlayerAdded = 'playerAdded',
-  RemovePlayer = 'removePlayer',
   PlayersList = 'playersList',
+}
+
+export enum PlayerEvents {
+  Add = 'playerAdd',
+  Added = 'playerAdded',
+  Ready = 'playerReady',
+  Data = 'playerData',
 }

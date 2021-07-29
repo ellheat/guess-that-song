@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useMachine } from "@xstate/react";
+import React from 'react';
 
-import { Container } from './lobby.styles';
+import { Container, Button } from './lobby.styles';
 import { socket } from '../../utils/socket';
-import { Events } from '../../config';
-import { PlayersList } from '../../components/playersList';
-import { PlayerType } from '../../types';
-import { PlayerInfo } from '../../components/playerInfo';
-import { gameMachine } from '../../machines';
+import { PlayerEvents } from '../../config/events';
 
+interface LobbyProps {
+  isPlayerReady?: boolean;
+}
 
-export const Lobby = () => {
+export const Lobby = ({ isPlayerReady }: LobbyProps) => {
+  const handleClick = () => socket.emit(PlayerEvents.Ready);
+
   return (
     <Container>
       Lobby screen
+      <Button onClick={handleClick} disabled={isPlayerReady}>Ready!</Button>
     </Container>
   );
 }

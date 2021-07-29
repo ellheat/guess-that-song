@@ -1,16 +1,12 @@
 import { CharacterType } from './characters';
 
-export enum PlayerStatus {
-  NotReady = 'not ready',
-  Ready = 'ready',
-}
 
 interface PlayerType extends CharacterType {
   id: string;
   points: number;
   correctAnswers: number;
   roundsWon: number;
-  status: PlayerStatus.NotReady | PlayerStatus.Ready;
+  isReady: boolean;
 }
 
 export class Players {
@@ -26,7 +22,7 @@ export class Players {
       points: 0,
       correctAnswers: 0,
       roundsWon: 0,
-      status: PlayerStatus.NotReady,
+      isReady: false,
       ...character
     });
     this.list.set(id, player);
@@ -36,4 +32,10 @@ export class Players {
   remove = (id: string) => this.list.delete(id);
 
   getList = () => Array.from(this.list.values());
+
+  setReady = (id: string) => {
+    const player = Object.assign(this.list.get(id), { isReady: true });
+    this.list.set(id, player);
+    return player;
+  }
 }

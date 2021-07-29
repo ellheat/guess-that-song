@@ -5,7 +5,7 @@ import { socket } from '../../../utils/socket';
 import { Container } from './game.styles';
 import { gameMachine } from '../../../machines';
 import { PlayerType } from '../../../types';
-import { Events } from '../../../config';
+import { Events } from '../../../config/events';
 import { PlayersList } from '../../../components/playersList';
 
 

@@ -1,8 +1,3 @@
-export enum PlayerStatus {
-  NotReady = 'not ready',
-  Ready = 'ready',
-}
-
 export type PlayerType = {
   id: string;
   name: string;
@@ -10,5 +5,5 @@ export type PlayerType = {
   points: number;
   correctAnswers: number;
   roundsWon: number;
-  status: PlayerStatus.NotReady | PlayerStatus.Ready;
+  isReady: boolean;
 }
