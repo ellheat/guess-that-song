@@ -1,10 +1,16 @@
 import { CharacterType } from './characters';
 
+export enum PlayerStatus {
+  NotReady = 'not ready',
+  Ready = 'ready',
+}
+
 interface PlayerType extends CharacterType {
   id: string;
   points: number;
   correctAnswers: number;
   roundsWon: number;
+  status: PlayerStatus.NotReady | PlayerStatus.Ready;
 }
 
 export class Players {
@@ -20,6 +26,7 @@ export class Players {
       points: 0,
       correctAnswers: 0,
       roundsWon: 0,
+      status: PlayerStatus.NotReady,
       ...character
     });
     this.list.set(id, player);

@@ -22,25 +22,29 @@ const characters = new Characters();
 const io = socketIO.listen(app.listen(Ports.Sockets));
 
 io.on(Events.Connection, (socket: Socket) => {
-  const character = characters.getRandomCharacter();
   const id = socket.id;
-
-  const player = players.add(id, character);
   const playersList = players.getList();
-
-  console.log(colors.info(`${player.name} has been joined`));
-  console.log(colors.info(`players: ${playersList.length}`))
-
-  socket.emit(Events.Connection, player);
   io.emit(Events.PlayersList, playersList);
 
-  socket.on(Events.Disconnect, () => {
-    players.remove(id);
+  socket.on(Events.AddPlayer, () => {
+    const character = characters.getRandomCharacter();
+    const player = players.add(id, character);
     const playersList = players.getList();
-    io.emit(Events.PlayersList, playersList);
-    console.log(colors.info(`${player.name} has been left`));
+
+    console.log(colors.info(`${player.name} has been joined`));
     console.log(colors.info(`players: ${playersList.length}`))
-  })
+
+    socket.emit(Events.PlayerAdded, player);
+    io.emit(Events.PlayersList, playersList);
+
+    socket.on(Events.Disconnect, () => {
+      players.remove(id);
+      const playersList = players.getList();
+      io.emit(Events.PlayersList, playersList);
+      console.log(colors.info(`${player.name} has been left`));
+      console.log(colors.info(`players: ${playersList.length}`))
+    })
+  });
 });
 
 app.listen(Ports.Base, () => {
