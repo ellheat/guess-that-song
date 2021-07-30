@@ -4,7 +4,7 @@ import { createServer } from "http";
 import { Server, Socket } from "socket.io";
 
 import { colors, Ports, Events } from './config';
-import { Players, Characters } from './components';
+import { Players, Characters, Game } from './modules';
 import { PlayerEvents } from './config/events';
 
 const app = express();
@@ -19,13 +19,13 @@ const socketIO = new Server(httpServer, {
 
 const players = new Players();
 const characters = new Characters();
+const game = new Game();
 
 const io = socketIO.listen(app.listen(Ports.Sockets));
 
 io.on(Events.Connection, (socket: Socket) => {
+  game.emitState(io);
   const id = socket.id;
-  const playersList = players.getList();
-  io.emit(Events.PlayersList, playersList);
 
   socket.on(PlayerEvents.Add, () => {
     const character = characters.getRandomCharacter();
@@ -37,14 +37,15 @@ io.on(Events.Connection, (socket: Socket) => {
 
     socket.emit(PlayerEvents.Added, player);
     io.emit(Events.PlayersList, playersList);
+  });
 
-    socket.on(Events.Disconnect, () => {
-      players.remove(id);
-      const playersList = players.getList();
-      io.emit(Events.PlayersList, playersList);
-      console.log(colors.info(`${player.name} has been left`));
-      console.log(colors.info(`players: ${playersList.length}`))
-    });
+  socket.on(Events.Disconnect, () => {
+    const player = players.getPlayer(id);
+    players.remove(id);
+    const playersList = players.getList();
+    io.emit(Events.PlayersList, playersList);
+    console.log(colors.info(`${player?.name} has been left`));
+    console.log(colors.info(`players: ${playersList.length}`))
   });
 
   socket.on(PlayerEvents.Ready, () => {
@@ -55,7 +56,11 @@ io.on(Events.Connection, (socket: Socket) => {
     io.emit(Events.PlayersList, playersList);
 
     players.checkAreAllReady();
-    const areAllReady = players.areAllReady;
+
+    if (players.areAllReady) {
+      game.setQuiz(io);
+      console.log(colors.info('Quiz has been started'));
+    }
   });
 });
 

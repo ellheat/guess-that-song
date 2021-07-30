@@ -1,5 +1,6 @@
 export enum Events {
   PlayersList = 'playersList',
+  GameState = 'gameState',
 }
 
 export enum PlayerEvents {

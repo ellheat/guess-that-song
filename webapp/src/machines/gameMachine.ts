@@ -6,7 +6,11 @@ export enum GameStates {
   Leaderboard = 'leaderboard',
 }
 
-export const gameMachine = createMachine({
+type GameStateContext = {
+  state: GameStates.Lobby | GameStates.Quiz | GameStates.Leaderboard,
+}
+
+export const gameMachine = createMachine<GameStateContext>({
   id: "game",
   initial: GameStates.Lobby,
   states: {

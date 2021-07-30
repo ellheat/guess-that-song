@@ -35,6 +35,8 @@ export class Players {
 
   getList = () => Array.from(this.list.values());
 
+  getPlayer = (id: string) => <PlayerType>this.list.get(id);
+
   checkAreAllReady = () => {
     const list = this.getList();
     const filteredList = list.filter(({ isReady }: PlayerType) => isReady);
@@ -42,7 +44,7 @@ export class Players {
   };
 
   setReady = (id: string) => {
-    const player = Object.assign(this.list.get(id), { isReady: true });
+    const player = Object.assign(this.getPlayer(id), { isReady: true });
     this.list.set(id, player);
     return player;
   }
