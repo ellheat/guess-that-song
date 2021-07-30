@@ -53,6 +53,9 @@ io.on(Events.Connection, (socket: Socket) => {
     console.log(colors.info(`${player.name} is ready`));
     socket.emit(PlayerEvents.Data, player);
     io.emit(Events.PlayersList, playersList);
+
+    players.checkAreAllReady();
+    const areAllReady = players.areAllReady;
   });
 });
 

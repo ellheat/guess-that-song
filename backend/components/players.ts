@@ -11,9 +11,11 @@ interface PlayerType extends CharacterType {
 
 export class Players {
   private list;
+  public areAllReady: boolean;
 
   constructor() {
     this.list = new Map<string, PlayerType>();
+    this.areAllReady = false;
   }
 
   add = (id: string, character: CharacterType) => {
@@ -32,6 +34,12 @@ export class Players {
   remove = (id: string) => this.list.delete(id);
 
   getList = () => Array.from(this.list.values());
+
+  checkAreAllReady = () => {
+    const list = this.getList();
+    const filteredList = list.filter(({ isReady }: PlayerType) => isReady);
+    this.areAllReady = list.length === filteredList.length;
+  };
 
   setReady = (id: string) => {
     const player = Object.assign(this.list.get(id), { isReady: true });
