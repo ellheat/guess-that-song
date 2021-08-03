@@ -13,7 +13,7 @@ export const Lobby = ({ list }: LobbyProps) => {
     <Wrapper>
       <PlayersList players={list} />
       <Container>
-        Waiting for the other players
+        Waiting for players..
       </Container>
     </Wrapper>
   );

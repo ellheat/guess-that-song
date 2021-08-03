@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useMachine } from "@xstate/react";
+import React, { useContext, useEffect, useState } from 'react';
 
 import { socket } from '../../../utils/socket';
 import { Wrapper, Container } from './player.styles';
-import { playerMachine, PlayerStates } from '../../../machines';
+import { GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
 import { PlayerEvents } from '../../../config/events';
 import { PlayerInfo } from '../../../components/playerInfo';
 import { PlayerLobby } from '../../../states/playerLobby';
+import { GameStateContext } from '../../../context';
+
 
 
 export const Player = () => {
+  const { state } = useContext(GameStateContext);
   const [playerData, setPlayerData] = useState<PlayerType>();
-  const [current, send] = useMachine(playerMachine);
 
   useEffect(() => {
     socket
@@ -20,17 +21,14 @@ export const Player = () => {
       .on(PlayerEvents.Added, (player: PlayerType) => setPlayerData(player));
 
     socket.on(PlayerEvents.Data, (player: PlayerType) => setPlayerData(player));
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   return (
     <Wrapper>
       <PlayerInfo data={playerData} />
       <Container>
-        {current.value === PlayerStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
+        {state === GameStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
+        {state === GameStates.Quiz && <div>Quiz State</div>}
       </Container>
     </Wrapper>
   );

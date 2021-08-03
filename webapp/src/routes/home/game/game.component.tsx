@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useMachine } from "@xstate/react";
+import React, { useContext, useEffect, useState } from 'react';
 
 import { socket } from '../../../utils/socket';
 import { Container } from './game.styles';
-import { gameMachine, GameStates } from '../../../machines';
+import { GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
 import { Events } from '../../../config/events';
 import { Wrapper } from '../player/player.styles';
 import { Lobby } from '../../../states/lobby';
+import { GameStateContext } from '../../../context';
+import { Quiz } from '../../../states/quiz';
 
 
 export const Game = () => {
-  const [current, send] = useMachine(gameMachine);
+  const { state } = useContext(GameStateContext);
   const [players, setPlayers] = useState<PlayerType[]>([]);
 
   useEffect(() => {
@@ -27,7 +28,8 @@ export const Game = () => {
   return (
     <Wrapper>
       <Container>
-        {current.value === GameStates.Lobby && <Lobby list={players} />}
+        {state === GameStates.Lobby && <Lobby list={players} />}
+        {state === GameStates.Quiz && <Quiz />}
       </Container>
     </Wrapper>
   );
