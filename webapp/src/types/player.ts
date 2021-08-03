@@ -5,4 +5,5 @@ export type PlayerType = {
   points: number;
   correctAnswers: number;
   roundsWon: number;
+  isReady: boolean;
 }

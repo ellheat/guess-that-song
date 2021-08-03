@@ -7,4 +7,5 @@ export const player = () => ({
   points: faker.datatype.number(),
   correctAnswers: faker.datatype.number(),
   roundsWon: faker.datatype.number(),
+  isReady: faker.datatype.boolean(),
 });

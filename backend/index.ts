@@ -5,6 +5,7 @@ import { Server, Socket } from "socket.io";
 
 import { colors, Ports, Events } from './config';
 import { Players, Characters } from './components';
+import { PlayerEvents } from './config/events';
 
 const app = express();
 const httpServer = createServer();
@@ -22,25 +23,37 @@ const characters = new Characters();
 const io = socketIO.listen(app.listen(Ports.Sockets));
 
 io.on(Events.Connection, (socket: Socket) => {
-  const character = characters.getRandomCharacter();
   const id = socket.id;
-
-  const player = players.add(id, character);
   const playersList = players.getList();
-
-  console.log(colors.info(`${player.name} has been joined`));
-  console.log(colors.info(`players: ${playersList.length}`))
-
-  socket.emit(Events.Connection, player);
   io.emit(Events.PlayersList, playersList);
 
-  socket.on(Events.Disconnect, () => {
-    players.remove(id);
+  socket.on(PlayerEvents.Add, () => {
+    const character = characters.getRandomCharacter();
+    const player = players.add(id, character);
     const playersList = players.getList();
-    io.emit(Events.PlayersList, playersList);
-    console.log(colors.info(`${player.name} has been left`));
+
+    console.log(colors.info(`${player.name} has been joined`));
     console.log(colors.info(`players: ${playersList.length}`))
-  })
+
+    socket.emit(PlayerEvents.Added, player);
+    io.emit(Events.PlayersList, playersList);
+
+    socket.on(Events.Disconnect, () => {
+      players.remove(id);
+      const playersList = players.getList();
+      io.emit(Events.PlayersList, playersList);
+      console.log(colors.info(`${player.name} has been left`));
+      console.log(colors.info(`players: ${playersList.length}`))
+    });
+  });
+
+  socket.on(PlayerEvents.Ready, () => {
+    const player = players.setReady(id);
+    const playersList = players.getList();
+    console.log(colors.info(`${player.name} is ready`));
+    socket.emit(PlayerEvents.Data, player);
+    io.emit(Events.PlayersList, playersList);
+  });
 });
 
 app.listen(Ports.Base, () => {
