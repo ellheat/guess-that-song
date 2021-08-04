@@ -9,7 +9,7 @@ import { Events } from '../config/events';
 
 type StateType = StateValue;
 
-interface IGameStateContext {
+export interface IGameStateContext {
   state: StateType;
 }
 

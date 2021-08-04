@@ -9,9 +9,9 @@ import { PlayerInfo } from '../../../components/playerInfo';
 import { PlayerLobby } from '../../../states/playerLobby';
 import { GameStateContext } from '../../../context';
 
+interface PlayerProps {}
 
-
-export const Player = () => {
+export const Player = ({}: PlayerProps) => {
   const { state } = useContext(GameStateContext);
   const [playerData, setPlayerData] = useState<PlayerType>();
 

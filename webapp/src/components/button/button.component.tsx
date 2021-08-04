@@ -1,16 +1,25 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
 
 import { Container } from './button.styles';
+import { ButtonColor, ButtonProps, ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
-interface ButtonProps {
-  children: ReactNode;
-  onClick: () => void;
-}
 
-export const Button = ({ children, onClick }: ButtonProps) => {
+export const Button = ({
+   children,
+   onClick,
+   variant = ButtonVariant.Primary,
+   size = ButtonSize.Small,
+   color = ButtonColor.Primary,
+   disabled = false
+}: ButtonProps) => {
+  const theme: ButtonTheme = { variant, size, color, disabled };
+
   return (
-    <Container onClick={onClick}>
-      {children}
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container disabled={disabled} onClick={onClick}>
+        {children}
+      </Container>
+    </ThemeProvider>
   );
 }
