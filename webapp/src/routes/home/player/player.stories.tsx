@@ -19,10 +19,8 @@ Lobby.decorators = [(Story) =>
 ];
 
 export const Quiz = Template.bind({});
-Quiz.decorators = [(Story) => {
-  return <GameStateContext.Provider value={{ state: GameStates.Quiz }}>{Story()}</GameStateContext.Provider>;
-}
-
+Quiz.decorators = [(Story) =>
+  <GameStateContext.Provider value={{ state: GameStates.Quiz }}>{Story()}</GameStateContext.Provider>
 ];
 
 export const Leaderboard = Template.bind({});

@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { socket } from '../../../utils/socket';
 import { Wrapper, Container } from './player.styles';
+import { GameStateContext } from '../../../context';
 import { GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
 import { PlayerEvents } from '../../../config/events';
 import { PlayerInfo } from '../../../components/playerInfo';
 import { PlayerLobby } from '../../../states/playerLobby';
-import { GameStateContext } from '../../../context';
+import { Answers } from '../../../states/answers';
+import { Score } from '../../../states/score';
 
 interface PlayerProps {}
 
@@ -28,7 +30,8 @@ export const Player = ({}: PlayerProps) => {
       <PlayerInfo data={playerData} />
       <Container>
         {state === GameStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
-        {state === GameStates.Quiz && <div>Quiz State</div>}
+        {state === GameStates.Quiz && <Answers />}
+        {state === GameStates.Leaderboard && <Score />}
       </Container>
     </Wrapper>
   );

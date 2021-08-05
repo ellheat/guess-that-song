@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Button } from './playerLobby.styles';
+import { Container, Text, Button } from './playerLobby.styles';
 import { socket } from '../../utils/socket';
 import { PlayerEvents } from '../../config/events';
 
@@ -13,8 +13,8 @@ export const PlayerLobby = ({ isReady }: PlayerLobbyProps) => {
 
   return (
     <Container>
-      Lobby
-      <Button onClick={handleClick} disabled={isReady}>Ready!</Button>
+      <Text>Lobby</Text>
+      <Button onClick={handleClick} disabled={isReady}>Ready</Button>
     </Container>
   );
 }

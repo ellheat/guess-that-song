@@ -7,19 +7,23 @@ type ButtonThemeProps = ThemeProps<ButtonTheme>;
 
 const smallSizeButtonStyle = css`
   padding: 8px 24px;
+  font-size: 12px;
 `;
 
 const mediumSizeButtonStyle = css`
   padding: 16px 40px;
+  font-size: 14px;
 `;
 
 const largeSizeButtonStyle = css`
   padding: 24px 56px;
+  font-size: 16px;
 `;
 
 const fullSizeButtonStyle = css`
   width: 100%;
   height: 100%;
+  font-size: 32px;
 `;
 
 const primaryBaseButtonStyle = css``;
