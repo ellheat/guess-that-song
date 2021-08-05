@@ -25,13 +25,17 @@ export const Player = ({}: PlayerProps) => {
     socket.on(PlayerEvents.Data, (player: PlayerType) => setPlayerData(player));
   }, []);
 
+  if (!playerData) {
+    return null;
+  }
+
   return (
     <Wrapper>
       <PlayerInfo data={playerData} />
       <Container>
         {state === GameStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
         {state === GameStates.Quiz && <Answers />}
-        {state === GameStates.Leaderboard && <Score />}
+        {state === GameStates.Leaderboard && <Score place={playerData.place} points={playerData.points} />}
       </Container>
     </Wrapper>
   );

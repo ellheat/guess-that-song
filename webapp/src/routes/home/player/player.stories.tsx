@@ -23,7 +23,7 @@ Quiz.decorators = [(Story) =>
   <GameStateContext.Provider value={{ state: GameStates.Quiz }}>{Story()}</GameStateContext.Provider>
 ];
 
-export const Leaderboard = Template.bind({});
-Leaderboard.decorators = [(Story) =>
+export const Score = Template.bind({});
+Score.decorators = [(Story) =>
   <GameStateContext.Provider value={{ state: GameStates.Leaderboard }}>{Story()}</GameStateContext.Provider>
 ];
