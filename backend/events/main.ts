@@ -1,18 +1,26 @@
-import { Characters, Game, Players } from '../modules';
+import { Characters, Game, GameState, Players } from '../modules';
 import { colors, Events } from '../config';
 import { Server, Socket } from 'socket.io';
-import { addPlayer, setReady } from './players';
+import { addPlayer, setPlayerReady } from './players';
+import { Quiz } from '../modules/quiz';
 
 const players = new Players();
 const game = new Game();
+const quiz = new Quiz(game, players);
 
 export const createConnection = (io: Server, characters: Characters) => {
   io.on(Events.Connection, (socket: Socket) => {
     game.emitState(io);
     const id = socket.id;
 
-    addPlayer(socket, io, id, players, characters);
-    setReady(socket, io, id, players, game);
+    addPlayer(socket, io, players, characters);
+    setPlayerReady(socket, io, players, game);
+    console.log('asd');
+
+    // if (game.state === GameState.Quiz) {
+    //   console.log('0');
+    //   quiz.start(io);
+    // }
 
     socket.on(Events.Disconnect, () => {
       const player = players.getPlayer(id);
