@@ -1,10 +1,12 @@
+require('dotenv').config();
+
 import express from 'express';
 import os from 'os';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 
 import { colors, Ports } from './config';
-import { Characters } from './modules';
+import { Characters, Spotify } from './modules';
 import { createConnection } from './events';
 
 const app = express();
@@ -20,6 +22,7 @@ const socketIO = new Server(httpServer, {
 const io = socketIO.listen(app.listen(Ports.Sockets));
 
 const characters = new Characters();
+const spotify = new Spotify();
 
 createConnection(io, characters);
 
@@ -28,5 +31,6 @@ app.listen(Ports.Base, () => {
   console.log(colors.success(`Backend listening on port ${Ports.Base}!`));
   console.log(colors.success(`Sockets listening on port ${Ports.Sockets}!`));
   characters.createCharactersList();
+  spotify.get();
   console.log(colors.success('Characters created'));
 });
