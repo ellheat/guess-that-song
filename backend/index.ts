@@ -1,11 +1,11 @@
 import express from 'express';
 import os from 'os';
-import { createServer } from "http";
-import { Server, Socket } from "socket.io";
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 
-import { colors, Ports, Events } from './config';
-import { Players, Characters, Game } from './modules';
-import { PlayerEvents } from './config/events';
+import { colors, Ports } from './config';
+import { Characters } from './modules';
+import { createConnection } from './events';
 
 const app = express();
 const httpServer = createServer();
@@ -17,52 +17,11 @@ const socketIO = new Server(httpServer, {
   },
 });
 
-const players = new Players();
-const characters = new Characters();
-const game = new Game();
-
 const io = socketIO.listen(app.listen(Ports.Sockets));
 
-io.on(Events.Connection, (socket: Socket) => {
-  game.emitState(io);
-  const id = socket.id;
+const characters = new Characters();
 
-  socket.on(PlayerEvents.Add, () => {
-    const character = characters.getRandomCharacter();
-    const player = players.add(id, character);
-    const playersList = players.getList();
-
-    console.log(colors.info(`${player.name} has been joined`));
-    console.log(colors.info(`players: ${playersList.length}`))
-
-    socket.emit(PlayerEvents.Added, player);
-    io.emit(Events.PlayersList, playersList);
-  });
-
-  socket.on(Events.Disconnect, () => {
-    const player = players.getPlayer(id);
-    players.remove(id);
-    const playersList = players.getList();
-    io.emit(Events.PlayersList, playersList);
-    console.log(colors.info(`${player?.name} has been left`));
-    console.log(colors.info(`players: ${playersList.length}`))
-  });
-
-  socket.on(PlayerEvents.Ready, () => {
-    const player = players.setReady(id);
-    const playersList = players.getList();
-    console.log(colors.info(`${player.name} is ready`));
-    socket.emit(PlayerEvents.Data, player);
-    io.emit(Events.PlayersList, playersList);
-
-    players.checkAreAllReady();
-
-    if (players.areAllReady) {
-      game.setQuiz(io);
-      console.log(colors.info('Quiz has been started'));
-    }
-  });
-});
+createConnection(io, characters);
 
 app.listen(Ports.Base, () => {
   console.log(colors.success(`IPv4 address: ${IPv4}:3000`));
