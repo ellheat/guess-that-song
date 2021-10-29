@@ -1,5 +1,6 @@
 const SpotifyWebApi = require('spotify-web-api-node');
 
+import { colors } from '../config';
 import { PlaylistDataType, PlaylistItemType, PlaylistTracksDataType } from '../types/playlist';
 import { TrackType } from '../types/track';
 
@@ -35,6 +36,8 @@ export class Spotify {
     );
   }
 
+  getPlaylist = () => this.playlist;
+
   fetchPlaylistAllItemsCount = async () => {
     return await this.spotifyApi.getPlaylist(process.env.PLAYLIST_ID, {
       fields: 'tracks',
@@ -51,22 +54,20 @@ export class Spotify {
       fields: 'items',
     }).then(
       (data: PlaylistTracksDataType) => {
-        return data.body.items.map((item: PlaylistItemType) => ({
-          id: item.track.id,
-          artist: item.track.artists[0].name,
-          title: item.track.name,
-          album: item.track.album.name,
-          url: item.track.href,
-          previewUrl: item.track.preview_url,
+        return data.body.items.map(({ track }: PlaylistItemType) => ({
+          id: track.id,
+          artist: track.artists[0].name,
+          title: track.name,
+          album: track.album.name,
+          url: track.href,
+          previewUrl: track.preview_url,
         })).filter(item => item.previewUrl);
       },
-      (err: any) => {
-        console.log('Something went wrong!', err);
-      }
+      (err: any) => console.log('Something went wrong!', err)
     );
   };
 
-  fetchAllPlaylistItems = async (playlistItemsCount: number) => {
+  fetchPlaylistAllItems = async (playlistItemsCount: number) => {
     let offset = 0;
     while (offset <= playlistItemsCount) {
       const tracks = await this.fetchPlaylistItems(offset);
@@ -80,8 +81,8 @@ export class Spotify {
       await this.getSpotifyToken();
     }
     const playlistItemsCount = await this.fetchPlaylistAllItemsCount();
-    console.log(`Playlist tracks: ${playlistItemsCount}`);
-    await this.fetchAllPlaylistItems(playlistItemsCount);
-    console.log(`Playlist tracks with preview url: ${this.playlist.length}`);
+    console.log(colors.info(`Playlist tracks: ${playlistItemsCount}`));
+    await this.fetchPlaylistAllItems(playlistItemsCount);
+    console.log(colors.info(`Playlist tracks with preview url: ${this.playlist.length}`));
   }
 }

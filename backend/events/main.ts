@@ -1,27 +1,18 @@
-import { Characters, Game, Players } from '../modules';
-import { colors, Events } from '../config';
+import { Characters, Game, Players, Spotify } from '../modules';
+import { Events } from '../config';
 import { Server, Socket } from 'socket.io';
-import { addPlayer, setPlayerReady } from './players';
+import { addPlayer, removePlayer, setPlayerReady } from './players';
 
 const players = new Players();
 const game = new Game();
 
-export const createConnection = (io: Server, characters: Characters) => {
+export const createConnection = (io: Server, characters: Characters, spotify: Spotify) => {
   io.on(Events.Connection, (socket: Socket) => {
     game.emitState(io);
-    const id = socket.id;
 
     addPlayer(socket, io, players, characters);
     setPlayerReady(socket, io, players, game);
-
-    socket.on(Events.Disconnect, () => {
-      const player = players.getPlayer(id);
-      players.remove(id);
-      const playersList = players.getList();
-      io.emit(Events.PlayersList, playersList);
-      console.log(colors.info(`${player?.name} has been left`));
-      console.log(colors.info(`players: ${playersList.length}`))
-    });
+    removePlayer(socket, io, players);
   });
 }
 

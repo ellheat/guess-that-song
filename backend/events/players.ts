@@ -36,6 +36,18 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
   });
 }
 
+export const removePlayer = (socket: Socket, io: Server, players: Players) => {
+  const id = socket.id;
+  socket.on(Events.Disconnect, () => {
+    const player = players.getPlayer(id);
+    players.remove(id);
+    const playersList = players.getList();
+    io.emit(Events.PlayersList, playersList);
+    console.log(colors.info(`${player?.name} has been left`));
+    console.log(colors.info(`players: ${playersList.length}`))
+  });
+}
+
 export const playerAnswer = (socket: Socket, io: Server, players: Players, game: Game) => {
   socket.on(PlayerEvents.Answer, () => {
     // const player = players.setPoints(id, points);

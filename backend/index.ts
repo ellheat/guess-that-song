@@ -24,7 +24,7 @@ const io = socketIO.listen(app.listen(Ports.Sockets));
 const characters = new Characters();
 const spotify = new Spotify();
 
-createConnection(io, characters);
+createConnection(io, characters, spotify);
 
 app.listen(Ports.Base, async () => {
   console.log(colors.success(`IPv4 address: ${IPv4}:3000`));
