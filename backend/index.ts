@@ -6,7 +6,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 
 import { colors, Ports } from './config';
-import { Characters, Spotify } from './modules';
+import { Characters, Spotify, Quiz } from './modules';
 import { createConnection } from './events';
 
 const app = express();

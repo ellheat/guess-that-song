@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
-import { Events, gameConfig } from '../config';
+import { Events } from '../config';
+import { Quiz } from './quiz';
 
 export enum GameState {
   Lobby = 'lobby',
@@ -9,52 +10,30 @@ export enum GameState {
 
 export class Game {
   public state: GameState.Lobby | GameState.Quiz | GameState.Leaderboard;
-  // public round: number;
-  // public timer: number;
+  private quiz: Quiz;
+  private io: Server;
 
-  constructor() {
+  constructor(quiz: Quiz, io: Server) {
     this.state = GameState.Lobby;
-    // this.round = 1;
-    // this.timer = gameConfig.maxTimePerRound;
+    this.quiz = quiz;
+    this.io = io;
   }
 
-  emitState = (io: Server) => io.emit(Events.GameState, this.state);
-  //
-  // emitRound = (io: Server) => io.emit(Events.GameRound, this.round);
-  //
-  // emitTimer = (io: Server) => io.emit(Events.RoundTimer, this.timer);
+  emitState = () => this.io.emit(Events.GameState, this.state);
 
-  setLobby = (io: Server) => {
+  setLobby = () => {
     this.state = GameState.Lobby;
-    this.emitState(io);
+    this.emitState();
   };
 
-  setQuiz = (io: Server) => {
+  setQuiz = () => {
     this.state = GameState.Quiz;
-    this.emitState(io);
+    this.emitState();
+    this.quiz.init(this.io);
   };
 
-  setLeaderboard = (io: Server) => {
+  setLeaderboard = () => {
     this.state = GameState.Leaderboard;
-    this.emitState(io);
+    this.emitState();
   };
-
-  // setNextRound = (io: Server) => {
-  //   if (this.round < gameConfig.maxRounds) {
-  //     this.round = this.round + 1;
-  //     this.emitRound(io);
-  //   }
-  //   this.setLeaderboard(io);
-  // };
-  //
-  // countdown = (io: Server) => {
-  //   const interval = setInterval(() => {
-  //     this.emitTimer(io);
-  //     if (this.timer === 0) {
-  //       this.timer = gameConfig.maxTimePerRound;
-  //       clearInterval(interval);
-  //     }
-  //     this.timer = this.timer - 1;
-  //   }, 1000);
-  // };
 }

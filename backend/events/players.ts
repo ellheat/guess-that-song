@@ -30,7 +30,7 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
     players.checkAreAllReady();
 
     if (players.areAllReady) {
-      game.setQuiz(io);
+      game.setQuiz();
       console.log(colors.info('Quiz has been started'));
     }
   });
