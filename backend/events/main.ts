@@ -6,7 +6,7 @@ import { addPlayer, removePlayer, setPlayerReady } from './players';
 
 export const createConnection = (io: Server, characters: Characters, spotify: Spotify) => {
   const players = new Players();
-  const quiz = new Quiz(players);
+  const quiz = new Quiz(players, spotify);
   const game = new Game(quiz, io);
 
   io.on(Events.Connection, (socket: Socket) => {

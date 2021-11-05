@@ -5,4 +5,5 @@ export type TrackType = {
   album: string,
   url: string,
   previewUrl: string,
+  isCorrect?: boolean
 }
