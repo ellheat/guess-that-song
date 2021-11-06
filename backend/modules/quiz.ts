@@ -32,8 +32,8 @@ export class Quiz {
 
   getTrack = (roundArray: TrackType[], playlist: TrackType[], index: number) => {
     const trackIndex: number = getRandomNumber(0, playlist.length - 1);
-    const pickedTrack = playlist[trackIndex];
-    const isSameSong: TrackType[] = roundArray.filter(item => item.id === pickedTrack.id);
+    const track: TrackType = Object.assign({ isCorrect: index === 0 }, <TrackType>playlist[trackIndex]);
+    const isSameSong: TrackType[] = roundArray.filter(item => item.id === track.id);
 
     if (index === 0) {
       playlist.splice(trackIndex, 1);
@@ -42,14 +42,13 @@ export class Quiz {
     if (isSameSong.length) {
       this.getTrack(roundArray, playlist, index);
     } else {
-      const track: TrackType = Object.assign(pickedTrack, { isCorrect: index === 0 })
       roundArray.push(track);
     }
   };
 
   getQuestions = (): TrackType[][] => {
     const playlist = this.spotify.getPlaylist();
-    const quizPlaylist = [];
+    const quizPlaylist: TrackType[][] = [];
 
     for (let index = 0; index < gameConfig.maxRounds; index++) {
       const tracksArray: TrackType[] = [];
@@ -63,8 +62,8 @@ export class Quiz {
   };
 
   init = (io: Server) => {
-    const questions = this.getQuestions();
-    console.log('questions', questions);
+    console.log(`----------- init -----------`);
+    const questions: TrackType[][] = this.getQuestions();
     console.log('Questions has been prepared');
     const interval = setInterval(() => {
       console.log('quizTimer', this.quizTimer);
