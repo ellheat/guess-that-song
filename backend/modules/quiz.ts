@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { QuizEvents, gameConfig } from '../config';
+import { QuizEvents, gameConfig, colors } from '../config';
 import { Players } from './players';
 import { Spotify } from './spotify';
 import { getRandomNumber } from '../utils/randomRangeNumber';
@@ -14,11 +14,13 @@ export class Quiz {
   private intervalBreak: number;
   private players: Players;
   private spotify: Spotify;
+  private answers: TrackType[][];
 
   constructor(players: Players, spotify: Spotify) {
     this.players = players;
     this.spotify = spotify;
     this.round = 1;
+    this.answers = [];
     this.roundTimer = gameConfig.maxTimerPerRound;
     this.quizTimer = gameConfig.startQuizTimer;
     this.intervalBreak = 1000;
@@ -46,9 +48,8 @@ export class Quiz {
     }
   };
 
-  getQuestions = (): TrackType[][] => {
+  getAnswers = () => {
     const playlist = this.spotify.getPlaylist();
-    const quizPlaylist: TrackType[][] = [];
 
     for (let index = 0; index < gameConfig.maxRounds; index++) {
       const tracksArray: TrackType[] = [];
@@ -56,17 +57,17 @@ export class Quiz {
         this.getTrack(tracksArray, playlist, deepIndex);
       }
       const round: TrackType[] = shuffle(tracksArray);
-      quizPlaylist.push(round);
+      this.answers.push(round);
     }
-    return quizPlaylist;
   };
 
   init = (io: Server) => {
-    console.log(`----------- init -----------`);
-    const questions: TrackType[][] = this.getQuestions();
-    console.log('Questions has been prepared');
+    console.log(colors.info(`----------- Init quiz -----------`));
+
+    this.getAnswers();
+    console.log(colors.success('Questions has been prepared successfully'));
+
     const interval = setInterval(() => {
-      console.log('quizTimer', this.quizTimer);
       this.emitQuizTimer(io);
       if (this.quizTimer === 0) {
         this.quizTimer = gameConfig.maxTimerPerRound;
@@ -78,6 +79,6 @@ export class Quiz {
   };
 
   startQuiz = (io: Server) => {
-    console.log('Round has been started');
+    console.log(colors.success('Quiz has been started'));
   };
 }
