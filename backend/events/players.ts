@@ -30,9 +30,21 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
     players.checkAreAllReady();
 
     if (players.areAllReady) {
-      game.setQuiz(io);
+      game.setQuiz();
       console.log(colors.info('Quiz has been started'));
     }
+  });
+}
+
+export const removePlayer = (socket: Socket, io: Server, players: Players) => {
+  const id = socket.id;
+  socket.on(Events.Disconnect, () => {
+    const player = players.getPlayer(id);
+    players.remove(id);
+    const playersList = players.getList();
+    io.emit(Events.PlayersList, playersList);
+    console.log(colors.info(`${player?.name} has been left`));
+    console.log(colors.info(`players: ${playersList.length}`))
   });
 }
 

@@ -19,8 +19,8 @@ export const Home = () => {
   return (
     <Container>
       <GameStateProvider>
-        { !isLocalhost && <Game /> }
-        { isLocalhost && <Player /> }
+        { isLocalhost && <Game /> }
+        { !isLocalhost && <Player /> }
       </GameStateProvider>
     </Container>
   );
