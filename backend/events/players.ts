@@ -30,10 +30,30 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
     players.checkAreAllReady();
 
     if (players.areAllReady) {
-      game.setQuiz();
-      console.log(colors.info('Quiz has been started'));
+      game.setQuiz(socket);
     }
   });
+}
+
+export const setPlayerAnswer = (
+  socket: Socket,
+  io: Server,
+  players: Players,
+  interval: NodeJS.Timer,
+  handleNextRound: (io: Server, socket: Socket, interval: NodeJS.Timer) => void
+) => {
+  const id = socket.id;
+  socket.on(PlayerEvents.Answer, () => {
+    players.setAnswer(id);
+    const playersList = players.getList();
+    io.emit(Events.PlayersList, playersList);
+
+    players.checkAreAllHaveAnswered();
+
+    if (players.areAllHaveAnswered) {
+      handleNextRound(io, socket, interval);
+    }
+  })
 }
 
 export const removePlayer = (socket: Socket, io: Server, players: Players) => {

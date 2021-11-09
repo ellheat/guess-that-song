@@ -1,10 +1,12 @@
-import { Server } from 'socket.io';
-import { QuizEvents, gameConfig, colors } from '../config';
+import { Server, Socket } from 'socket.io';
+import { QuizEvents, gameConfig, colors, Events } from '../config';
 import { Players } from './players';
 import { Spotify } from './spotify';
 import { getRandomNumber } from '../utils/randomRangeNumber';
 import { TrackType } from '../types/track';
 import { shuffle } from '../utils/array';
+import { PlayerEvents } from '../config/events';
+import { setPlayerAnswer } from '../events/players';
 
 
 export class Quiz {
@@ -26,7 +28,7 @@ export class Quiz {
     this.intervalBreak = 1000;
   }
 
-  emitRound = (io: Server) => io.emit(QuizEvents.Round, this.round);
+  emitRound = (io: Server) => io.emit(QuizEvents.Round, { round: this.round, answers: this.answers[this.round - 1] });
 
   emitRoundTimer = (io: Server) => io.emit(QuizEvents.RoundTimer, this.roundTimer);
 
@@ -61,7 +63,13 @@ export class Quiz {
     }
   };
 
-  init = (io: Server) => {
+  handleNextRound = (io: Server, socket: Socket, interval: NodeJS.Timer) => {
+    clearInterval(interval);
+    this.round = this.round + 1;
+    this.startRound(io, socket);
+  };
+
+  init = (io: Server, socket: Socket) => {
     console.log(colors.info(`----------- Init quiz -----------`));
 
     this.getAnswers();
@@ -69,16 +77,35 @@ export class Quiz {
 
     const interval = setInterval(() => {
       this.emitQuizTimer(io);
+      console.log('Quiz timer:', this.quizTimer);
       if (this.quizTimer === 0) {
-        this.quizTimer = gameConfig.maxTimerPerRound;
+        this.quizTimer = gameConfig.startQuizTimer;
         clearInterval(interval);
-        this.startQuiz(io);
+        this.startQuiz(io, socket);
       }
       this.quizTimer = this.quizTimer - 1;
     }, this.intervalBreak);
   };
 
-  startQuiz = (io: Server) => {
+  startQuiz = (io: Server, socket: Socket) => {
     console.log(colors.success('Quiz has been started'));
+    this.startRound(io, socket);
+  };
+
+  startRound = (io: Server, socket: Socket) => {
+    console.log(colors.info(`Round: ${this.round} has been started'`));
+    this.emitRound(io);
+
+    const interval = setInterval(() => {
+      console.log('Round timer:', this.roundTimer);
+      this.emitRoundTimer(io);
+      if (this.roundTimer === 0) {
+        this.roundTimer = gameConfig.maxTimerPerRound;
+        this.handleNextRound(io, socket, interval);
+      }
+      this.roundTimer = this.roundTimer - 1;
+    }, this.intervalBreak);
+
+    setPlayerAnswer(socket, io, this.players, interval, this.handleNextRound);
   };
 }

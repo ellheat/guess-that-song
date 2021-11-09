@@ -1,4 +1,4 @@
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { Events } from '../config';
 import { Quiz } from './quiz';
 
@@ -26,10 +26,10 @@ export class Game {
     this.emitState();
   };
 
-  setQuiz = () => {
+  setQuiz = (socket: Socket) => {
     this.state = GameState.Quiz;
     this.emitState();
-    this.quiz.init(this.io);
+    this.quiz.init(this.io, socket);
   };
 
   setLeaderboard = () => {
