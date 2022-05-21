@@ -4,17 +4,21 @@ Change name of the file `.env.example` to the `.env`. Check your local address I
 ```
 ipconfig - Windows
 ifconfig - Linux/MacOS
-``` 
+```
 then copy/paste your local address IPv4 into `.env` file in `REACT_APP_NETWORK_IP_V4`.
 
 Finally, you can follow below steps.
-<br/><br/>
-###### The project requires running backend and frontend at the same time
+### Installation
 
-## Backend side
+In the main directory in the terminal run command `npm run dependencies:ci`
 
-In the main directory run `cd backend` in the terminal and put `yarn && yarn start`
+### Start project
 
-## Frontend side
+##### Start backend
+To run the backend in the terminal run command `npm run start:backend`.
 
-In the main directory run `cd webapp` in the terminal and put `yarn && yarn start`
+Backend should listening on the port `8080` and sockets on the port `4444`.
+##### Start webapp
+To run the webapp application in the terminal run command `npm run start:webapp`.
+
+Application should listening on the port `3000`

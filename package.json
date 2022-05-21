@@ -1,0 +1,21 @@
+{
+  "name": "guess-that-song",
+  "author": "Patryk Poleszczuk",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start:backend": "cd packages/backend && npm run start",
+    "start:webapp": "cd packages/webapp && npm run start",
+    "dependencies:ci": "rm -rf node_modules && rm -rf */*/node_modules && npm ci --no-audit --no-fund"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellheat/guess-that-song.git"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/ellheat/guess-that-song#readme"
+}
