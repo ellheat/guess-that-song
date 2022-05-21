@@ -1,0 +1,22 @@
+{
+  "name": "guess-that-song",
+  "version": "0.0.1",
+  "description": "Change name of the file `.env.example` to the `.env`. Check your local address IPv4 using the command ``` ipconfig - Windows ifconfig - Linux/MacOS ```  then copy/paste your local address IPv4 into `.env` file in `REACT_APP_NETWORK_IP_V4`.",
+  "main": "index.js",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellheat/guess-that-song.git"
+  },
+  "author": "Patryk Poleszczuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ellheat/guess-that-song/issues"
+  },
+  "homepage": "https://github.com/ellheat/guess-that-song#readme"
+}
