@@ -4,17 +4,14 @@ Change name of the file `.env.example` to the `.env`. Check your local address I
 ```
 ipconfig - Windows
 ifconfig - Linux/MacOS
-``` 
+```
 then copy/paste your local address IPv4 into `.env` file in `REACT_APP_NETWORK_IP_V4`.
 
 Finally, you can follow below steps.
-<br/><br/>
-###### The project requires running backend and frontend at the same time
+#### Installation
 
-## Backend side
+In the main directory in the terminal run command `npm run dependencies:ci`
 
-In the main directory run `cd backend` in the terminal and put `yarn && yarn start`
-
-## Frontend side
+#### Start the game
 
 In the main directory run `cd webapp` in the terminal and put `yarn && yarn start`
