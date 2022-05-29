@@ -3,6 +3,9 @@ export enum Events {
   Disconnect = 'disconnect',
   PlayersList = 'playersList',
   GameState = 'gameState',
+  GameRound = 'gameRound',
+  RoundTimer = 'roundTimer',
+  QuizTimer = 'quizTimer',
 }
 
 export enum PlayerEvents {

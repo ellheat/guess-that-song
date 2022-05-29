@@ -31,7 +31,7 @@ app.listen(Ports.Base, async () => {
   console.log(colors.success(`Backend listening on port ${Ports.Base}!`));
   console.log(colors.success(`Sockets listening on port ${Ports.Sockets}!`));
   console.log('--------------------------------------');
-  await characters.createCharactersList();
+  characters.createCharactersList();
   console.log(colors.success('Characters created'));
   await spotify.fetchPlaylist();
   console.log(colors.success('Playlist has been fetched'));

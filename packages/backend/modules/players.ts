@@ -33,13 +33,13 @@ export class Players {
 
   remove = (id: string) => this.list.delete(id);
 
-  getList = () => Array.from(this.list.values());
+  getList = (): PlayerType[] => Array.from(this.list.values());
 
   getPlayer = (id: string) => <PlayerType>this.list.get(id);
 
   checkAreAllReady = () => {
     const list = this.getList();
-    const filteredList = list.filter(({ isReady }: PlayerType) => isReady);
+    const filteredList = list.filter(({ isReady }) => isReady);
     this.areAllReady = list.length === filteredList.length;
   };
 
