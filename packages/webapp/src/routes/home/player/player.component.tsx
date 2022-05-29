@@ -30,7 +30,7 @@ export const Player = ({}: PlayerProps) => {
       <PlayerInfo data={playerData} />
       <Container>
         {state === GameStates.Lobby && <PlayerLobby isReady={playerData?.isReady} />}
-        {state === GameStates.Quiz && <Answers />}
+        {state === GameStates.Quiz && <Answers answers={[]} />}
         {state === GameStates.Leaderboard && <Score place={playerData?.place} points={playerData?.points} />}
       </Container>
     </Wrapper>

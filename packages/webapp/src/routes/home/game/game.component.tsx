@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-
+import { Events } from '../../../config/events';
+import { Lobby } from '../../../states/lobby';
+import { Quiz } from '../../../states/quiz';
 import { socket } from '../../../utils/socket';
-import { Container } from './game.styles';
+import { GameStateContext } from '../../../context';
 import { GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
-import { Events } from '../../../config/events';
-import { Wrapper } from '../player/player.styles';
-import { Lobby } from '../../../states/lobby';
-import { GameStateContext } from '../../../context';
-import { Quiz } from '../../../states/quiz';
+import { Wrapper, Container } from './game.styles';
 
 
 export const Game = () => {

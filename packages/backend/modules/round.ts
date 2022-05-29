@@ -27,7 +27,7 @@ export class Round {
 
   init = (io: Server) => {
     console.log(colors.info(`----------- Init round: ${this.roundNumber} -----------`));
-    this.emitRoundTimer(io);
+    this.emitRound(io);
 
     const interval = setInterval(() => {
       this.emitRoundTimer(io);
