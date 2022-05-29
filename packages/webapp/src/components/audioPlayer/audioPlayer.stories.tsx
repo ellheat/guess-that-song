@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { AudioPlayer } from './audioPlayer.component';
-import { ANSWERS } from '../../states/answers/mocks/answers';
+import { ANSWERS } from '../answers/mocks/answers';
 
 export default {
   title: 'Components/AudioPlayer',

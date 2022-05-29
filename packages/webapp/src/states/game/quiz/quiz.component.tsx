@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { socket } from '../../utils/socket';
-import { QuizEvents } from '../../config/events';
+import { socket } from '../../../utils/socket';
+import { QuizEvents } from '../../../config/events';
 import { Container, Bar, AudioPlayerWrapper } from './quiz.styles';
 import { AnswerType } from './types';
-import { Answers } from '../answers';
-import { AudioPlayer } from '../../components/audioPlayer';
+import { Answers } from '../../../components/answers';
+import { AudioPlayer } from '../../../components/audioPlayer';
 
 type RoundDataType = {
     round: number;

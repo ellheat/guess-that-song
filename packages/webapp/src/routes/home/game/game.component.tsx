@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Events } from '../../../config/events';
-import { Lobby } from '../../../states/lobby';
-import { Quiz } from '../../../states/quiz';
+import { Lobby } from '../../../states/game/lobby';
+import { Quiz } from '../../../states/game/quiz';
 import { socket } from '../../../utils/socket';
 import { GameStateContext } from '../../../context';
 import { GameStates } from '../../../machines';

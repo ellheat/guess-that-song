@@ -5,7 +5,7 @@ import { Answers } from './answers.component';
 import { ANSWERS } from './mocks/answers';
 
 export default {
-    title: 'States/Answers',
+    title: 'Components/Answers',
     component: Answers,
 } as ComponentMeta<typeof Answers>;
 

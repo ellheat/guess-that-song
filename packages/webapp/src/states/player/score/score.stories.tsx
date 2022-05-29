@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Score } from './score.component';
-import { player } from '../../mocks';
+import { player } from '../../../mocks';
 
 const playerData = player();
 

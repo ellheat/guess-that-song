@@ -11,7 +11,7 @@ export default {
   component: Player,
 } as ComponentMeta<typeof Player>;
 
-const Template: ComponentStory<typeof Player> = (args) => <Player {...args} />;
+const Template: ComponentStory<typeof Player> = () => <Player />;
 
 export const Lobby = Template.bind({});
 Lobby.decorators = [(Story) =>

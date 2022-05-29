@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Audio, Source } from './audioPlayer.styles';
 
 type AudioPlayerProps = {
@@ -8,7 +8,7 @@ type AudioPlayerProps = {
 export const AudioPlayer = ({ url }: AudioPlayerProps) => {
     const audioRef = useRef<HTMLAudioElement>(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (audioRef.current) {
             audioRef?.current.pause();
             audioRef?.current.load();
