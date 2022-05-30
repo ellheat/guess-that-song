@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Audio, Source } from './audioPlayer.styles';
+import { Audio } from './audioPlayer.styles';
 
 type AudioPlayerProps = {
     url: string;
@@ -16,9 +16,5 @@ export const AudioPlayer = ({ url }: AudioPlayerProps) => {
         }
     }, [url, audioRef]);
 
-    return (
-        <Audio autoPlay loop controls ref={audioRef}>
-            <Source src={url}></Source>
-        </Audio>
-    );
+    return <Audio autoPlay controls ref={audioRef} src={url} />;
 };

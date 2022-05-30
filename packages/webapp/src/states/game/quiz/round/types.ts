@@ -9,3 +9,8 @@ export type AnswerType = {
 };
 
 export type AnswersListType = AnswerType[];
+
+export type RoundDataType = {
+    round: number;
+    answers: AnswerType[];
+}

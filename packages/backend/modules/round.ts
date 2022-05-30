@@ -27,6 +27,7 @@ export class Round {
 	emitPreRoundTimer = (io: Server) => io.emit(QuizEvents.PreRoundTimer, this.preRoundTimer);
 
 	init = (io: Server) => {
+		this.emitPreRoundTimer(io);
 		this.emitRoundData(io);
 
 		console.log(colors.info(`----------- Init round: ${this.roundNumber} -----------`));
