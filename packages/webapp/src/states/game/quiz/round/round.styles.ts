@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { black, white } from '../../../theme/colors';
+import { black, white } from '../../../../theme/colors';
 
 export const Container = styled.div``;
 

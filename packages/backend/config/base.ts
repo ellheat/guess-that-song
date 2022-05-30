@@ -1,5 +1,5 @@
 export const gameConfig = {
-  maxRounds: 30,
-  maxTimerPerRound: 30,
-  startQuizTimer: 3,
+	maxRounds: 30,
+	roundTimer: 30,
+	preRoundTimer: 3,
 }

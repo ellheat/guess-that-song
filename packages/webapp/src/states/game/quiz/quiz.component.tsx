@@ -1,50 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { socket } from '../../../utils/socket';
 import { QuizEvents } from '../../../config/events';
-import { Container, Bar, AudioPlayerWrapper } from './quiz.styles';
 import { AnswerType } from './types';
-import { Answers } from '../../../components/answers';
-import { AudioPlayer } from '../../../components/audioPlayer';
+import { Round } from './round';
+import { PreRound } from './preRound';
 
 type RoundDataType = {
     round: number;
     answers: AnswerType[];
 }
 
+enum QUIZ_STATES {
+    PreRound = 'preRound',
+    Round = 'round',
+}
+
 export const Quiz = () => {
-const [roundNumber, setRoundNumber] = useState<number>(0);
-const [answers, setAnswers] = useState<AnswerType[]>([]);
-const [trackUrl, setTrackUrl] = useState<string>('');
-const [time, setTime] = useState<number>(30);
+    const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
+    const [roundNumber, setRoundNumber] = useState<number>(0);
+    const [answers, setAnswers] = useState<AnswerType[]>([]);
+    const [trackUrl, setTrackUrl] = useState<string>('');
 
-useEffect(() => {
-    socket.on(QuizEvents.Round, ({ round, answers }: RoundDataType) => {
-        console.log('round', round);
-        console.log('answers', answers);
-        const correctAnswer = answers.find((answer: AnswerType) => answer.isCorrect);
-        console.log('correctAnswer', correctAnswer);
-        setRoundNumber(round);
-        setAnswers(answers);
-        setTrackUrl(correctAnswer?.previewUrl || '');
-    });
+    useEffect(() => {
+        socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {
+            setQuizState(QUIZ_STATES.PreRound);
+            console.log('round', round);
+            console.log('answers', answers);
+            const correctAnswer = answers.find((answer: AnswerType) => answer.isCorrect);
+            console.log('correctAnswer', correctAnswer);
+            setRoundNumber(round);
+            setAnswers(answers);
+            setTrackUrl(correctAnswer?.previewUrl || '');
+        });
 
-    socket.on(QuizEvents.RoundTimer, (time: number) => {
-        setTime(time);
-    });
+        socket.on(QuizEvents.StartRound, () => {
+            setQuizState(QUIZ_STATES.Round);
+        });
 
-    return () => {
-        socket.disconnect();
-    };
-}, []);
+        return () => {
+            console.log('quiz end');
+            socket.disconnect();
+        };
+    }, []);
 
-return (
-    <Container>
-        <AudioPlayerWrapper>
-            <AudioPlayer url={trackUrl} />
-        </AudioPlayerWrapper>
-        <Bar>Round: {roundNumber}</Bar>
-        <Bar>Time: {time}</Bar>
-        <Answers answers={answers} />
-    </Container>
-);
+    console.log('quizState', quizState);
+
+    return (
+        <>
+            {quizState === QUIZ_STATES.PreRound && <PreRound />}
+            {quizState === QUIZ_STATES.Round && <Round answers={answers} roundNumber={roundNumber} trackUrl={trackUrl} />}
+        </>
+    );
 }
