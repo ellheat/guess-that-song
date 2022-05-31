@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-
-import { socket } from '../../../utils/socket';
-import { Container } from './game.styles';
+import { Events } from '../../../config/events';
+import { GameStateContext } from '../../../context';
 import { GameStates } from '../../../machines';
 import { PlayerType } from '../../../types';
-import { Events } from '../../../config/events';
-import { Wrapper } from '../player/player.styles';
-import { Lobby } from '../../../states/lobby';
-import { GameStateContext } from '../../../context';
-import { Quiz } from '../../../states/quiz';
+import { socket } from '../../../utils/socket';
+import { Lobby } from '../../../states/game/lobby';
+import { Quiz } from '../../../states/game/quiz';
+import { Leaderboard } from '../../../states/game/leaderboard';
+import { Wrapper, Container } from './game.styles';
 
 
 export const Game = () => {
@@ -30,6 +29,7 @@ export const Game = () => {
       <Container>
         {state === GameStates.Lobby && <Lobby list={players} />}
         {state === GameStates.Quiz && <Quiz />}
+        {state === GameStates.Leaderboard && <Leaderboard />}
       </Container>
     </Wrapper>
   );

@@ -10,12 +10,10 @@ export enum GameState {
 
 export class Game {
   public state: GameState.Lobby | GameState.Quiz | GameState.Leaderboard;
-  private quiz: Quiz;
   private io: Server;
 
-  constructor(quiz: Quiz, io: Server) {
+  constructor(io: Server) {
     this.state = GameState.Lobby;
-    this.quiz = quiz;
     this.io = io;
   }
 
@@ -29,7 +27,6 @@ export class Game {
   setQuiz = () => {
     this.state = GameState.Quiz;
     this.emitState();
-    this.quiz.init(this.io);
   };
 
   setLeaderboard = () => {

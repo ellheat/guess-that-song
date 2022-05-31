@@ -3,7 +3,7 @@ require('dotenv').config();
 import express from 'express';
 import os from 'os';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 import { colors, Ports } from './config';
 import { Characters, Spotify, Quiz } from './modules';
@@ -31,7 +31,7 @@ app.listen(Ports.Base, async () => {
   console.log(colors.success(`Backend listening on port ${Ports.Base}!`));
   console.log(colors.success(`Sockets listening on port ${Ports.Sockets}!`));
   console.log('--------------------------------------');
-  await characters.createCharactersList();
+  characters.createCharactersList();
   console.log(colors.success('Characters created'));
   await spotify.fetchPlaylist();
   console.log(colors.success('Playlist has been fetched'));

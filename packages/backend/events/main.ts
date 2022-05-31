@@ -1,20 +1,20 @@
 import { Characters, Game, Players, Spotify, Quiz, GameState } from '../modules';
-import { Events } from '../config';
+import { Events, QuizEvents } from '../config';
 import { Server, Socket } from 'socket.io';
 import { addPlayer, removePlayer, setPlayerReady } from './players';
 
 
 export const createConnection = (io: Server, characters: Characters, spotify: Spotify) => {
-  const players = new Players();
-  const quiz = new Quiz(players, spotify);
-  const game = new Game(quiz, io);
+	const players = new Players();
+	const game = new Game(io);
+	const quiz = new Quiz(game, players, spotify);
 
-  io.on(Events.Connection, (socket: Socket) => {
-    game.emitState();
+	io.on(Events.Connection, (socket: Socket) => {
+		game.emitState();
 
-    addPlayer(socket, io, players, characters);
-    setPlayerReady(socket, io, players, game);
-    removePlayer(socket, io, players);
-  });
+		addPlayer(socket, io, players, characters);
+		setPlayerReady(socket, io, players, game, quiz);
+		removePlayer(socket, io, players);
+	});
 }
 

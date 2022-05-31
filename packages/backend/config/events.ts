@@ -1,22 +1,23 @@
 export enum Events {
-  Connection = 'connection',
-  Disconnect = 'disconnect',
-  PlayersList = 'playersList',
-  GameState = 'gameState',
+	Connection = 'connection',
+	Disconnect = 'disconnect',
+	GameRound = 'gameRound',
+	GameState = 'gameState',
+	PlayersList = 'playersList',
 }
 
 export enum PlayerEvents {
-  Add = 'playerAdd',
-  Added = 'playerAdded',
-  Ready = 'playerReady',
-  Answer = 'playerAnswer',
-  Data = 'playerData',
+	Add = 'playerAdd',
+	Added = 'playerAdded',
+	Answer = 'playerAnswer',
+	Data = 'playerData',
+	Ready = 'playerReady',
 }
 
 export enum QuizEvents {
-  StartQuiz = 'startQuiz',
-  StartRound = 'startRound',
-  Round = 'round',
-  RoundTimer = 'roundTimer',
-  QuizTimer = 'quizTimer',
+	InitRound = 'initRound',
+	PreRoundTimer = 'preRoundTimer',
+	RoundTimer = 'roundTimer',
+	StartQuiz = 'startQuiz',
+	StartRound = 'startRound',
 }

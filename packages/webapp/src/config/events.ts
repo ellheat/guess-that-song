@@ -1,11 +1,18 @@
 export enum Events {
-  PlayersList = 'playersList',
-  GameState = 'gameState',
+	GameState = 'gameState',
+	PlayersList = 'playersList',
 }
 
 export enum PlayerEvents {
-  Add = 'playerAdd',
-  Added = 'playerAdded',
-  Ready = 'playerReady',
-  Data = 'playerData',
+	Add = 'playerAdd',
+	Added = 'playerAdded',
+	Data = 'playerData',
+	Ready = 'playerReady',
+}
+
+export enum QuizEvents {
+	InitRound = 'initRound',
+	PreRoundTimer = 'preRoundTimer',
+	RoundTimer = 'roundTimer',
+	StartRound = 'startRound',
 }
