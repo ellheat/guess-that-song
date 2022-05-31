@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { Events, PlayerEvents } from '../config/events';
 import { colors } from '../config';
-import { Characters, Game, Players } from '../modules';
+import { Characters, Game, Players, Quiz } from '../modules';
 
 export const addPlayer = (socket: Socket, io: Server, players: Players, characters: Characters) => {
   const id = socket.id;
@@ -18,7 +18,7 @@ export const addPlayer = (socket: Socket, io: Server, players: Players, characte
   });
 }
 
-export const setPlayerReady = (socket: Socket, io: Server, players: Players, game: Game) => {
+export const setPlayerReady = (socket: Socket, io: Server, players: Players, game: Game, quiz: Quiz) => {
   const id = socket.id;
   socket.on(PlayerEvents.Ready, () => {
     const player = players.setReady(id);
@@ -31,7 +31,7 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
 
     if (players.areAllReady) {
       game.setQuiz();
-      console.log(colors.info('Quiz has been started'));
+      quiz.init(io);
     }
   });
 }

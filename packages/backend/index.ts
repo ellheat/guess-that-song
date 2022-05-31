@@ -3,7 +3,7 @@ require('dotenv').config();
 import express from 'express';
 import os from 'os';
 import { createServer } from 'http';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 
 import { colors, Ports } from './config';
 import { Characters, Spotify, Quiz } from './modules';

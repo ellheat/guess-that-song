@@ -39,7 +39,7 @@ export const Quiz = () => {
 
         return () => {
             console.log('quiz ends');
-            socket.disconnect();
+            socket.off();
         };
     }, []);
 

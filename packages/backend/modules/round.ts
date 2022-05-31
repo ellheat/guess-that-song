@@ -1,21 +1,23 @@
 import { Server } from 'socket.io';
 import { QuizEvents, gameConfig, colors } from '../config';
 import { Answers } from './answers';
-
+import { Game } from './game';
 
 export class Round {
-	private answers: Answers;
+	private answers;
+	private game;
+	private intervalBreak: number;
+	private preRoundTimer: number;
 	private roundNumber: number;
 	private roundTimer: number;
-	private preRoundTimer: number;
-	private intervalBreak: number;
 
-	constructor(answers: Answers) {
+	constructor(answers: Answers, game: Game) {
 		this.answers = answers;
 		this.roundNumber = 1;
 		this.roundTimer = gameConfig.roundTimer;
 		this.preRoundTimer = gameConfig.preRoundTimer;
 		this.intervalBreak = 1000;
+		this.game = game;
 	}
 
 	emitRoundData = (io: Server) => io.emit(QuizEvents.InitRound, { round: this.roundNumber, answers: this.answers.get(this.roundNumber) });
@@ -34,7 +36,7 @@ export class Round {
 
 		const preRoundInterval = setInterval(() => {
 			this.emitPreRoundTimer(io);
-			if (this.preRoundTimer === 0) {
+			if (this.preRoundTimer === 1) {
 				this.preRoundTimer = gameConfig.preRoundTimer;
 				clearInterval(preRoundInterval);
 				this.startRound(io);
@@ -55,7 +57,7 @@ export class Round {
 			if (this.roundTimer === 0) {
 				this.roundTimer = gameConfig.roundTimer;
 				clearInterval(roundInterval);
-				this.nextRound(io);
+				this.initNextRound(io);
 				return;
 			}
 			console.log('roundTimer', this.roundTimer);
@@ -63,7 +65,11 @@ export class Round {
 		}, this.intervalBreak);
 	};
 
-	nextRound = (io: Server) => {
+	initNextRound = (io: Server) => {
+		if (this.roundNumber === gameConfig.maxRounds) {
+			this.game.setLeaderboard();
+			return null;
+		}
 		this.roundNumber = this.roundNumber + 1;
 		this.init(io);
 	};

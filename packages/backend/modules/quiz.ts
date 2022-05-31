@@ -1,9 +1,10 @@
 import { Server } from 'socket.io';
-import { QuizEvents, gameConfig, colors } from '../config';
+import { colors } from '../config';
 import { Players } from './players';
 import { Spotify } from './spotify';
 import { Round } from './round';
 import { Answers } from './answers';
+import { Game } from './game';
 
 
 export class Quiz {
@@ -11,10 +12,10 @@ export class Quiz {
   private players: Players;
   private round: Round;
 
-  constructor(players: Players, spotify: Spotify) {
+  constructor(game: Game, players: Players, spotify: Spotify) {
     this.answers = new Answers(spotify);
     this.players = players;
-    this.round = new Round(this.answers);
+    this.round = new Round(this.answers, game);
   }
 
   init = (io: Server) => {

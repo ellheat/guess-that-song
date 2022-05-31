@@ -45,7 +45,7 @@ export class Answers {
   };
 
   get = (roundNumber: number) => {
-    const roundAnswers = this.answers[roundNumber];
+    const roundAnswers = this.answers[roundNumber - 1];
     console.log('roundAnswers', roundAnswers);
     return roundAnswers;
   };
