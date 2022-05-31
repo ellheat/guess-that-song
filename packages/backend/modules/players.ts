@@ -12,10 +12,12 @@ interface PlayerType extends CharacterType {
 export class Players {
   private list;
   public areAllReady: boolean;
+  public areAllAnswered: boolean;
 
   constructor() {
     this.list = new Map<string, PlayerType>();
     this.areAllReady = false;
+    this.areAllAnswered = false;
   }
 
   add = (id: string, character: CharacterType) => {

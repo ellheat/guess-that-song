@@ -10,7 +10,7 @@ import { PlayerInfo } from '../../../components/playerInfo';
 import { PlayerLobby } from '../../../states/player/playerLobby';
 import { Score } from '../../../states/player/score';
 import { PLAYER_DEFAULT_STATE } from './player.constants';
-import { PlayerAnswers } from '../../../states/player/playerAnswers';
+import { Quiz } from '../../../states/player/quiz';
 
 
 export const Player = () => {
@@ -30,7 +30,7 @@ export const Player = () => {
       <PlayerInfo data={playerData} />
       <Container>
         {state === GameStates.Lobby && <PlayerLobby isReady={playerData.isReady} />}
-        {state === GameStates.Quiz && <PlayerAnswers />}
+        {state === GameStates.Quiz && <Quiz />}
         {state === GameStates.Leaderboard && <Score place={playerData?.place} points={playerData.points} />}
       </Container>
     </Wrapper>

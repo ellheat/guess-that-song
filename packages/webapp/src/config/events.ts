@@ -6,6 +6,7 @@ export enum Events {
 export enum PlayerEvents {
 	Add = 'playerAdd',
 	Added = 'playerAdded',
+	Answer = 'playerAnswer',
 	Data = 'playerData',
 	Ready = 'playerReady',
 }

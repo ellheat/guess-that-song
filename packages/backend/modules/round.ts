@@ -2,22 +2,25 @@ import { Server } from 'socket.io';
 import { QuizEvents, gameConfig, colors } from '../config';
 import { Answers } from './answers';
 import { Game } from './game';
+import { Players } from './players';
 
 export class Round {
 	private answers;
 	private game;
+	private players;
 	private intervalBreak: number;
 	private preRoundTimer: number;
 	private roundNumber: number;
 	private roundTimer: number;
 
-	constructor(answers: Answers, game: Game) {
+	constructor(answers: Answers, players: Players, game: Game) {
 		this.answers = answers;
 		this.roundNumber = 1;
 		this.roundTimer = gameConfig.roundTimer;
 		this.preRoundTimer = gameConfig.preRoundTimer;
 		this.intervalBreak = 1000;
 		this.game = game;
+		this.players = players;
 	}
 
 	emitRoundData = (io: Server) => io.emit(QuizEvents.InitRound, { round: this.roundNumber, answers: this.answers.get(this.roundNumber) });
@@ -54,7 +57,7 @@ export class Round {
 
 		const roundInterval = setInterval(() => {
 			this.emitRoundTimer(io);
-			if (this.roundTimer === 0) {
+			if (this.roundTimer === 0 || this.players.areAllAnswered) {
 				this.roundTimer = gameConfig.roundTimer;
 				clearInterval(roundInterval);
 				this.initNextRound(io);

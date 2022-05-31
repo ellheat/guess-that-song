@@ -9,13 +9,11 @@ import { Game } from './game';
 
 export class Quiz {
   private answers: Answers;
-  private players: Players;
   private round: Round;
 
   constructor(game: Game, players: Players, spotify: Spotify) {
     this.answers = new Answers(spotify);
-    this.players = players;
-    this.round = new Round(this.answers, game);
+    this.round = new Round(this.answers, players, game);
   }
 
   init = (io: Server) => {
