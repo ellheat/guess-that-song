@@ -13,9 +13,9 @@ export class Round {
 	private roundNumber: number;
 	private roundTimer: number;
 
-	constructor(answers: Answers, players: Players, game: Game) {
+	constructor(answers: Answers, players: Players, game: Game, roundNumber: number) {
 		this.answers = answers;
-		this.roundNumber = 1;
+		this.roundNumber = roundNumber;
 		this.roundTimer = gameConfig.roundTimer;
 		this.preRoundTimer = gameConfig.preRoundTimer;
 		this.intervalBreak = 1000;
@@ -31,9 +31,10 @@ export class Round {
 
 	emitPreRoundTimer = (io: Server) => io.emit(QuizEvents.PreRoundTimer, this.preRoundTimer);
 
-	init = (io: Server) => {
+	init = (io: Server, increaseRoundNumber: any) => {
 		this.emitPreRoundTimer(io);
 		this.emitRoundData(io);
+		this.players.setAllUnanswered();
 
 		console.log(colors.info(`----------- Init round: ${this.roundNumber} -----------`));
 
@@ -42,7 +43,7 @@ export class Round {
 			if (this.preRoundTimer === 1) {
 				this.preRoundTimer = gameConfig.preRoundTimer;
 				clearInterval(preRoundInterval);
-				this.startRound(io);
+				this.startRound(io, increaseRoundNumber);
 				return;
 			}
 			console.log('preRoundTimer', this.preRoundTimer);
@@ -50,7 +51,7 @@ export class Round {
 		}, this.intervalBreak);
 	};
 
-	startRound = (io: Server) => {
+	startRound = (io: Server, increaseRoundNumber: any) => {
 		this.emitStartRound(io);
 
 		console.log(colors.success(`----------- Round: ${this.roundNumber} has been started -----------`));
@@ -60,7 +61,7 @@ export class Round {
 			if (this.roundTimer === 0 || this.players.areAllAnswered) {
 				this.roundTimer = gameConfig.roundTimer;
 				clearInterval(roundInterval);
-				this.initNextRound(io);
+				this.initNextRound(io, increaseRoundNumber);
 				return;
 			}
 			console.log('roundTimer', this.roundTimer);
@@ -68,12 +69,13 @@ export class Round {
 		}, this.intervalBreak);
 	};
 
-	initNextRound = (io: Server) => {
+	initNextRound = (io: Server, increaseRoundNumber: any) => {
 		if (this.roundNumber === gameConfig.maxRounds) {
 			this.game.setLeaderboard();
 			return null;
 		}
+		increaseRoundNumber()
 		this.roundNumber = this.roundNumber + 1;
-		this.init(io);
+		this.init(io, increaseRoundNumber);
 	};
 }

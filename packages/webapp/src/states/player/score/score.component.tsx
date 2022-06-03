@@ -10,8 +10,7 @@ interface ScoreProps {
 export const Score = ({ place = 0, points = 0 }: ScoreProps) => {
   return (
     <Container>
-      <Place>Your place: {place}</Place>
-      <Points>Your points: {points}</Points>
+      Thank you for participating
     </Container>
   );
 }

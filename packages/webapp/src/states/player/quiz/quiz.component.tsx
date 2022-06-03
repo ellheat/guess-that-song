@@ -34,11 +34,6 @@ export const Quiz = () => {
         socket.on(QuizEvents.PreRoundTimer, () => {
             setQuizState(QUIZ_STATES.PreRound);
         });
-
-        return () => {
-            console.log('quiz ends');
-            socket.off();
-        };
     }, []);
 
 	return (
