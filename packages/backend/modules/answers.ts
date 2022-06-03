@@ -1,4 +1,3 @@
-import { Server } from 'socket.io';
 import { gameConfig } from '../config';
 import { Spotify } from './spotify';
 import { getRandomNumber } from '../utils/randomRangeNumber';
@@ -44,9 +43,8 @@ export class Answers {
     }
   };
 
-  get = (roundNumber: number) => {
+  get = (roundNumber: number): TrackType[] => {
     const roundAnswers = this.answers[roundNumber - 1];
-    console.log('roundAnswers', roundAnswers);
     return roundAnswers;
   };
 }

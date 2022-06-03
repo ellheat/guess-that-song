@@ -1,7 +1,6 @@
 export enum Events {
 	Connection = 'connection',
 	Disconnect = 'disconnect',
-	GameRound = 'gameRound',
 	GameState = 'gameState',
 	PlayersList = 'playersList',
 }
@@ -20,4 +19,5 @@ export enum QuizEvents {
 	RoundTimer = 'roundTimer',
 	StartQuiz = 'startQuiz',
 	StartRound = 'startRound',
+	Leaderboard = 'leaderboard',
 }

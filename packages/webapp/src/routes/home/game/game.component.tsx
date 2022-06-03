@@ -18,10 +18,6 @@ export const Game = () => {
     socket.on(Events.PlayersList, (list: PlayerType[]) => {
       setPlayers(list);
     });
-
-    return () => {
-      socket.disconnect();
-    };
   }, []);
 
   return (
@@ -29,7 +25,7 @@ export const Game = () => {
       <Container>
         {state === GameStates.Lobby && <Lobby list={players} />}
         {state === GameStates.Quiz && <Quiz />}
-        {state === GameStates.Leaderboard && <Leaderboard />}
+        {state === GameStates.Leaderboard && <Leaderboard list={players} />}
       </Container>
     </Wrapper>
   );

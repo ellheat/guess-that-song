@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
-import { Events } from '../config';
-import { Quiz } from './quiz';
+import { Events, QuizEvents } from '../config';
+import { Players } from './players';
 
 export enum GameState {
   Lobby = 'lobby',
@@ -10,14 +10,18 @@ export enum GameState {
 
 export class Game {
   public state: GameState.Lobby | GameState.Quiz | GameState.Leaderboard;
-  private io: Server;
+  private io;
+  private players;
 
-  constructor(io: Server) {
+  constructor(io: Server, players: Players) {
     this.state = GameState.Lobby;
+    this.players = players;
     this.io = io;
   }
 
   emitState = () => this.io.emit(Events.GameState, this.state);
+
+  emitLeaderboard = () => this.io.emit(Events.PlayersList, this.players.getList());
 
   setLobby = () => {
     this.state = GameState.Lobby;
@@ -32,5 +36,6 @@ export class Game {
   setLeaderboard = () => {
     this.state = GameState.Leaderboard;
     this.emitState();
+    this.emitLeaderboard();
   };
 }
