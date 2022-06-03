@@ -39,7 +39,7 @@ export const Quiz = () => {
 	return (
 		<>
             {quizState === QUIZ_STATES.PreRound && <div>be ready!</div>}
-            {quizState === QUIZ_STATES.Round && <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} />}
+            {quizState === QUIZ_STATES.Round && <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} isHide />}
         </>
 	);
 }

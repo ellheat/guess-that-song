@@ -33,8 +33,8 @@ export class Round {
 
 	init = (io: Server, increaseRoundNumber: any) => {
 		this.emitPreRoundTimer(io);
-		this.emitRoundData(io);
 		this.players.setAllUnanswered();
+		setTimeout(() => this.emitRoundData(io), 1000);
 
 		console.log(colors.info(`----------- Init round: ${this.roundNumber} -----------`));
 

@@ -32,7 +32,9 @@ export const setPlayerReady = (socket: Socket, io: Server, players: Players, gam
 
 		if (players.areAllReady) {
 			game.setQuiz();
-			quiz.init(io);
+			setTimeout(() => {
+				quiz.init(io);
+			})
 		}
 	});
 }

@@ -13,19 +13,20 @@ export type AnswersProps<
     answers: T[];
     onClick?: (id: string) => void;
     disabled?: boolean;
+    isHide?: boolean;
 };
 
-export const Answers = ({ answers, onClick, disabled }: AnswersProps) => {
+export const Answers = ({ answers, onClick, disabled, isHide }: AnswersProps) => {
     return (
         <Container>
-            {answers.map(({ title, id }) => (
+            {answers.map(({ title, id }, key) => (
                 <Button
                     size={ButtonSize.Full}
                     key={title}
                     onClick={onClick ? () => onClick(id) : undefined}
                     disabled={disabled}
                 >
-                    {title}
+                    {isHide ? key + 1 : `${key + 1}. ${title}`}
                 </Button>
             ))}
         </Container>

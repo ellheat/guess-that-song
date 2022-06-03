@@ -28,6 +28,8 @@ export class Quiz {
     console.log(colors.success('Questions have been prepared successfully'));
 
     console.log(colors.success('Quiz has been started'));
-    this.round.init(io, this.increaseRoundNumber);
+    setTimeout(() => {
+      this.round.init(io, this.increaseRoundNumber);
+    });
   };
 }
