@@ -1,5 +1,5 @@
 import React from 'react';
-import { sortBy } from 'lodash';
+import { orderBy } from 'lodash';
 import { PlayerType } from '../../../types';
 
 import { Container, List, Item } from './leaderboard.styles';
@@ -12,11 +12,11 @@ export const Leaderboard = ({ list }: LeaderboardProps) => {
 	return (
 		<Container>
 			Leaderboard screen:
-			{sortBy(list, ['points'])?.map(({ name, points }) => (
-				<List>
+			<List>
+				{orderBy(list, ['points'], ['desc'])?.map(({ name, points }) => (
 					<Item key={name}>{`${name} - ${points} points`}</Item>
-				</List>
-			))}
+				))}
+			</List>
 		</Container>
 	);
 }

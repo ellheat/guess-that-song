@@ -67,7 +67,10 @@ export class Players {
 
   setAllUnanswered = () => {
     const list = this.getList();
-    list.map(({ isAnswered }) => isAnswered = false);
+    // const tmpList = list.map((player) => ({ ...player, isAnswered: false }));
+    this.list.forEach(player => player.isAnswered = false);
+    console.log('this.list', this.list);
+    // this.list = tmpList;
     this.areAllAnswered = false;
   }
 
