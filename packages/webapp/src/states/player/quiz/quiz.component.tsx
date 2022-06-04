@@ -34,6 +34,13 @@ export const Quiz = () => {
         socket.on(QuizEvents.PreRoundTimer, () => {
             setQuizState(QUIZ_STATES.PreRound);
         });
+
+        return () => {
+            socket.off(QuizEvents.InitRound);
+            socket.off(QuizEvents.StartRound);
+            socket.off(QuizEvents.RoundTimer);
+            socket.off(QuizEvents.PreRoundTimer);
+        };
     }, []);
 
 	return (

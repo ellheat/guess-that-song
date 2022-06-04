@@ -10,39 +10,40 @@ import { Events } from '../config/events';
 type StateType = StateValue;
 
 export interface IGameStateContext {
-  state: StateType;
+	state: StateType;
 }
 
 export const GameStateContext = createContext<IGameStateContext>({
-  state: GameStates.Lobby,
+	state: GameStates.Lobby,
 });
 
 type GameStateProviderProps = {
-  children: ReactNode,
+	children: ReactNode,
 }
 
 export const GameStateProvider = ({ children }: GameStateProviderProps) => {
-  const [current, send] = useMachine(gameMachine);
+	const [current, send] = useMachine(gameMachine);
 
-  useEffect(() => {
-    socket.on(Events.GameState, (state: string) => {
-      if (
-        (current.value === GameStates.Lobby && state === GameStates.Quiz) ||
-        (current.value === GameStates.Quiz && state === GameStates.Leaderboard) ||
-        (current.value === GameStates.Leaderboard && state === GameStates.Lobby)
-      ) {
-        send('NEXT');
-      }
-    });
-  }, [current.value, send]);
+	useEffect(() => {
+		socket.on(Events.GameState, (state: string) => {
+			console.log('current.value', current.value);
+			console.log('state', state);
+			if (
+				(current.value === GameStates.Lobby && state === GameStates.Quiz) ||
+				(current.value === GameStates.Quiz && state === GameStates.Lobby)
+			) {
+				send('NEXT');
+			}
+		});
+	}, [current.value, send]);
 
-  const value = {
-    state: current.value,
-  };
+	const value = {
+		state: current.value,
+	};
 
-  return (
-    <GameStateContext.Provider value={value}>
-      {children}
-    </GameStateContext.Provider>
-  );
+	return (
+		<GameStateContext.Provider value={value}>
+			{children}
+		</GameStateContext.Provider>
+	);
 }

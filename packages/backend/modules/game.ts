@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { Events, QuizEvents } from '../config';
+import { Events } from '../config';
 import { Players } from './players';
 
 export enum GameState {
@@ -21,21 +21,26 @@ export class Game {
 
   emitState = () => this.io.emit(Events.GameState, this.state);
 
-  emitLeaderboard = () => this.io.emit(Events.PlayersList, this.players.getList());
+  emitPlayerList = () => this.io.emit(Events.PlayersList, this.players.getList());
 
   setLobby = () => {
     this.state = GameState.Lobby;
+    this.emitPlayerList();
     this.emitState();
+    console.log(`${this.state} has been initialized`);
   };
 
   setQuiz = () => {
     this.state = GameState.Quiz;
+    this.players.clearAllData();
     this.emitState();
+    console.log(`${this.state} has been initialized`);
   };
 
   setLeaderboard = () => {
     this.state = GameState.Leaderboard;
-    this.emitState();
-    this.emitLeaderboard();
+    this.players.setAllUnready();
+    this.setLobby();
+    console.log(`${this.state} has been initialized`);
   };
 }

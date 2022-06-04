@@ -14,7 +14,7 @@ export const PlayerLobby = ({ isReady }: PlayerLobbyProps) => {
   return (
     <Container>
       <Text>Lobby</Text>
-      <Button onClick={handleClick} disabled={isReady}>Ready</Button>
+      <Button onClick={handleClick}>Ready</Button>
     </Container>
   );
 }

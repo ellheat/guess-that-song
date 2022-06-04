@@ -38,8 +38,9 @@ export const Quiz = () => {
         });
 
         return () => {
-            console.log('quiz ends');
-            socket.off();
+            socket.off(QuizEvents.InitRound);
+            socket.off(QuizEvents.RoundTimer);
+            socket.off(QuizEvents.PreRoundTimer);
         };
     }, []);
 
