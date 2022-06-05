@@ -3,6 +3,7 @@ import { QuizEvents, gameConfig, colors } from '../config';
 import { Answers } from './answers';
 import { Game } from './game';
 import { Players } from './players';
+import { DEFAULT_ROUND_NUMBER } from './quiz';
 
 export class Round {
 	private answers;
@@ -13,9 +14,9 @@ export class Round {
 	private roundNumber: number;
 	private roundTimer: number;
 
-	constructor(answers: Answers, players: Players, game: Game, roundNumber: number) {
+	constructor(answers: Answers, players: Players, game: Game) {
 		this.answers = answers;
-		this.roundNumber = roundNumber;
+		this.roundNumber = DEFAULT_ROUND_NUMBER;
 		this.roundTimer = gameConfig.roundTimer;
 		this.preRoundTimer = gameConfig.preRoundTimer;
 		this.intervalBreak = 1000;
@@ -71,7 +72,8 @@ export class Round {
 
 	initNextRound = (io: Server, increaseRoundNumber: any) => {
 		if (this.roundNumber === gameConfig.maxRounds) {
-			this.game.setLeaderboard();
+			this.game.setLobby();
+			this.roundNumber = DEFAULT_ROUND_NUMBER;
 			return null;
 		}
 		increaseRoundNumber()

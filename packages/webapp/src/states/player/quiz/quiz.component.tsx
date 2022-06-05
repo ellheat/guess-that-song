@@ -18,7 +18,6 @@ export const Quiz = () => {
 
 	useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ answers }: RoundDataType) => {
-			console.log('answers', answers);
 			setAreAnswersBlocked(true);
             setAnswers(answers);
         });
@@ -34,6 +33,13 @@ export const Quiz = () => {
         socket.on(QuizEvents.PreRoundTimer, () => {
             setQuizState(QUIZ_STATES.PreRound);
         });
+
+        return () => {
+            socket.off(QuizEvents.InitRound);
+            socket.off(QuizEvents.StartRound);
+            socket.off(QuizEvents.RoundTimer);
+            socket.off(QuizEvents.PreRoundTimer);
+        };
     }, []);
 
 	return (

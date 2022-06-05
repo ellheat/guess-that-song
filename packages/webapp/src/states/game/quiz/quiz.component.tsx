@@ -19,12 +19,11 @@ export const Quiz = () => {
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {
             console.log('round', round);
-            console.log('answers', answers);
             const correctAnswer = answers.find((answer: AnswerType) => answer.isCorrect);
-            console.log('correctAnswer', correctAnswer);
+            console.log('answers', answers, 'correctAnswer', correctAnswer);
             setRoundNumber(round);
             setAnswers(answers);
-            setTrackUrl(correctAnswer?.previewUrl || '');
+            setTrackUrl(correctAnswer?.previewUrl || correctAnswer?.url || '');
         });
 
         socket.on(QuizEvents.RoundTimer, (time: number) => {
@@ -38,8 +37,9 @@ export const Quiz = () => {
         });
 
         return () => {
-            console.log('quiz ends');
-            socket.off();
+            socket.off(QuizEvents.InitRound);
+            socket.off(QuizEvents.RoundTimer);
+            socket.off(QuizEvents.PreRoundTimer);
         };
     }, []);
 
