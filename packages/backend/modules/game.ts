@@ -3,44 +3,43 @@ import { Events } from '../config';
 import { Players } from './players';
 
 export enum GameState {
-  Lobby = 'lobby',
-  Quiz = 'quiz',
-  Leaderboard = 'leaderboard',
+	Lobby = 'lobby',
+	Quiz = 'quiz',
+	Leaderboard = 'leaderboard',
 }
-
 export class Game {
-  public state: GameState.Lobby | GameState.Quiz | GameState.Leaderboard;
-  private io;
-  private players;
+	public state: GameState.Lobby | GameState.Quiz | GameState.Leaderboard;
+	private io;
+	private players;
 
-  constructor(io: Server, players: Players) {
-    this.state = GameState.Lobby;
-    this.players = players;
-    this.io = io;
-  }
+	constructor(io: Server, players: Players) {
+		this.state = GameState.Lobby;
+		this.players = players;
+		this.io = io;
+	}
 
-  emitState = () => this.io.emit(Events.GameState, this.state);
+	emitState = () => this.io.emit(Events.GameState, this.state);
 
-  emitPlayerList = () => this.io.emit(Events.PlayersList, this.players.getList());
+	emitPlayerList = () => this.io.emit(Events.PlayersList, this.players.getList());
 
-  setLobby = () => {
-    this.state = GameState.Lobby;
-    this.emitPlayerList();
-    this.emitState();
-    console.log(`${this.state} has been initialized`);
-  };
+	setLobby = () => {
+		this.state = GameState.Lobby;
+		this.emitPlayerList();
+		this.emitState();
+		console.log(`${this.state} has been initialized`);
+	};
 
-  setQuiz = () => {
-    this.state = GameState.Quiz;
-    this.players.clearAllData();
-    this.emitState();
-    console.log(`${this.state} has been initialized`);
-  };
+	setQuiz = () => {
+		this.state = GameState.Quiz;
+		this.players.clearQuizData();
+		this.emitState();
+		console.log(`${this.state} has been initialized`);
+	};
 
-  setLeaderboard = () => {
-    this.state = GameState.Leaderboard;
-    this.players.setAllUnready();
-    this.setLobby();
-    console.log(`${this.state} has been initialized`);
-  };
+	setLeaderboard = () => {
+		this.state = GameState.Leaderboard;
+		this.players.setAllUnready();
+		this.setLobby();
+		console.log(`${this.state} has been initialized`);
+	};
 }

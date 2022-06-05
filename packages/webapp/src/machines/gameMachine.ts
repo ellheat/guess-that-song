@@ -18,10 +18,7 @@ export const gameMachine = createMachine<GameStateContext>({
 			on: { NEXT: GameStates.Quiz },
 		},
 		[GameStates.Quiz]: {
-			on: { NEXT: GameStates.Lobby },
+			on: { PREV: GameStates.Lobby },
 		},
-		// [GameStates.Leaderboard]: {
-		//   on: { NEXT: GameStates.Lobby },
-		// },
 	},
 });

@@ -26,13 +26,11 @@ export const GameStateProvider = ({ children }: GameStateProviderProps) => {
 
 	useEffect(() => {
 		socket.on(Events.GameState, (state: string) => {
-			console.log('current.value', current.value);
-			console.log('state', state);
-			if (
-				(current.value === GameStates.Lobby && state === GameStates.Quiz) ||
-				(current.value === GameStates.Quiz && state === GameStates.Lobby)
-			) {
+			if (current.value === GameStates.Lobby && state === GameStates.Quiz) {
 				send('NEXT');
+			}
+			if (current.value === GameStates.Quiz && state === GameStates.Lobby) {
+				send('PREV');
 			}
 		});
 	}, [current.value, send]);

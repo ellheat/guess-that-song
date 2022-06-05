@@ -19,6 +19,8 @@ const PLAYER_DEFAULT_VALUES = {
 	isAnswered: false,
 }
 
+// type PlayerDefaultValuesTypes = keyof typeof PLAYER_DEFAULT_VALUES;
+
 export class Players {
 	private list;
 	public areAllReady: boolean;
@@ -87,7 +89,12 @@ export class Players {
 		return playerNewData;
 	}
 
-	clearAllData = () => {
-		this.list.forEach(player => ({ ...player, ...PLAYER_DEFAULT_VALUES }));
+	clearQuizData = () => {
+		this.list.forEach((player: PlayerType)  => {
+			player.points = 0;
+			player.roundsWon = 0;
+			player.correctAnswers = 0;
+			player.isAnswered = false;
+		});
 	}
 }
