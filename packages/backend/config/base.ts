@@ -1,5 +1,5 @@
 export const gameConfig = {
-	maxRounds: 1,
+	maxRounds: 30,
 	roundTimer: 30,
 	preRoundTimer: 3,
 }

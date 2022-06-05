@@ -17,13 +17,13 @@ export class Answers {
   getTrack = (roundArray: TrackType[], playlist: TrackType[], index: number) => {
     const trackIndex: number = getRandomNumber(0, playlist.length - 1);
     const track: TrackType = Object.assign({ isCorrect: index === 0 }, <TrackType>playlist[trackIndex]);
-    const isSameSong: TrackType[] = roundArray.filter(item => item.id === track.id);
+    const isSameSong: boolean = roundArray.some(item => item.id === track.id);
 
     if (index === 0) {
       playlist.splice(trackIndex, 1);
     }
 
-    if (isSameSong.length) {
+    if (isSameSong) {
       this.getTrack(roundArray, playlist, index);
     } else {
       roundArray.push(track);
