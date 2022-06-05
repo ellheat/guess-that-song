@@ -6,15 +6,12 @@ import { PlayerType } from '../../../types';
 import { socket } from '../../../utils/socket';
 import { Lobby } from '../../../states/game/lobby';
 import { Quiz } from '../../../states/game/quiz';
-// import { Leaderboard } from '../../../components/leaderboard';
 import { Wrapper, Container } from './game.styles';
 
 
 export const Game = () => {
 	const { state } = useContext(GameStateContext);
 	const [players, setPlayers] = useState<PlayerType[]>([]);
-
-	console.log('state', state);
 
 	useEffect(() => {
 		socket.on(Events.PlayersList, (list: PlayerType[]) => {

@@ -31,6 +31,7 @@ export class Answers {
   };
 
   prepare = () => {
+    this.answers = [];
     const playlist = this.spotify.getPlaylist();
 
     for (let index = 0; index < gameConfig.maxRounds; index++) {

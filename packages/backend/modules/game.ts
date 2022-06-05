@@ -24,6 +24,7 @@ export class Game {
 
 	setLobby = () => {
 		this.state = GameState.Lobby;
+		this.players.setAllUnready();
 		this.emitPlayerList();
 		this.emitState();
 		console.log(`${this.state} has been initialized`);
@@ -33,13 +34,6 @@ export class Game {
 		this.state = GameState.Quiz;
 		this.players.clearQuizData();
 		this.emitState();
-		console.log(`${this.state} has been initialized`);
-	};
-
-	setLeaderboard = () => {
-		this.state = GameState.Leaderboard;
-		this.players.setAllUnready();
-		this.setLobby();
 		console.log(`${this.state} has been initialized`);
 	};
 }

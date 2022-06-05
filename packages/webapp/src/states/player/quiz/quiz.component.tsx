@@ -18,7 +18,6 @@ export const Quiz = () => {
 
 	useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ answers }: RoundDataType) => {
-			console.log('answers', answers);
 			setAreAnswersBlocked(true);
             setAnswers(answers);
         });

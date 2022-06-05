@@ -71,7 +71,7 @@ export class Round {
 
 	initNextRound = (io: Server, increaseRoundNumber: any) => {
 		if (this.roundNumber === gameConfig.maxRounds) {
-			this.game.setLeaderboard();
+			this.game.setLobby();
 			return null;
 		}
 		increaseRoundNumber()
