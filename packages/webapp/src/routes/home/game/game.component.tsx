@@ -17,6 +17,9 @@ export const Game = () => {
 		socket.on(Events.PlayersList, (list: PlayerType[]) => {
 			setPlayers(list);
 		});
+		socket.on(Events.Authorization, (data: object) => {
+			console.log('data', data);
+		});
 	}, []);
 
 	return (

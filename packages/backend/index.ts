@@ -3,15 +3,15 @@ require('dotenv').config();
 import express from 'express';
 import os from 'os';
 import { createServer } from 'http';
-import { post, get } from 'request';
+// import { post, get } from 'request';
 import { Server, Socket } from 'socket.io';
-import querystring from 'querystring';
 
-import { colors, Ports } from './config';
+import { colors, Events, Ports } from './config';
 import { Characters, Spotify, Quiz } from './modules';
 import { createConnection } from './events';
 
 import { generateRandomString } from './utils/generateRandomString';
+import axios from 'axios';
 
 const app = express();
 const httpServer = createServer();
@@ -42,19 +42,19 @@ app.listen(Ports.Base, async () => {
 });
 
 app.get('/login', (req, res) => {
-
-	var state = generateRandomString(16);
-	var scope = 'user-read-private user-read-email';
+	const redirectUri = 'http://localhost:8080/callback';
+	const state = generateRandomString(16);
+	const scope = 'user-read-private user-read-email';
 
 	const urlParams = new URLSearchParams({
 		response_type: 'code',
 		client_id: `${process.env.CLIENT_ID}`,
 		scope,
-		redirect_uri: 'http://localhost:8080/callback',
+		redirect_uri: redirectUri,
 		state
 	})
 
-	res.redirect('https://accounts.spotify.com/authorize?' + urlParams.toString());
+	res.redirect(`https://accounts.spotify.com/authorize?${urlParams.toString()}`);
 });
 
 app.get('/callback', (req, res) => {
@@ -66,50 +66,40 @@ app.get('/callback', (req, res) => {
 		console.log('Spotify Error');
 		const errorUrlParams = new URLSearchParams({ error: 'state_mismatch' });
 
-		res.redirect('/#' + errorUrlParams.toString());
+		res.redirect(`/#${errorUrlParams.toString()}`);
 	} else {
-    const authOptions = {
-		url: 'https://accounts.spotify.com/api/token',
-		form: {
-			code,
-			redirect_uri: 'http://localhost:3000',
-			grant_type: 'authorization_code'
-		},
-		headers: {
-			'Authorization': 'Basic ' + (Buffer.from(`${process.env.CLIENT_ID} : ${process.env.CLIENT_SECRET}`).toString('base64'))
-		},
-		json: true
-    };
+		const clientSecrets = `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`;
+		const auth = `Basic ${Buffer.from(clientSecrets).toString('base64')}`;
 
-	post(authOptions, (error, response, body) => {
-		const urlParams = new URLSearchParams();
+		const data = new URLSearchParams({
+			grant_type: 'client_credentials',
+		}).toString();
 
-    	if (!error && response.statusCode === 200) {
+		axios({
+			method: 'post',
+			url: 'https://accounts.spotify.com/api/token',
+			data,
+			headers: {
+				Authorization: auth
+			}
+		}).then(response => {
+			const urlParams = new URLSearchParams();
 
-			const accessToken = body.access_token;
-			const refreshToken = body.refresh_token;
+			if (response.status === 200) {
+				urlParams.append('access_token', response.data.access_token);
+			} else {
+				console.log('response.data', response);
+				urlParams.append('error', 'invalid_token');
+			}
 
-			const options = {
-				url: 'https://api.spotify.com/v1/me',
-				headers: { 'Authorization': 'Bearer ' + accessToken },
-				json: true
-			};
+			res.redirect('http://localhost:3000');
 
-			// use the access token to access the Spotify Web API
-			get(options, function(error, response, body) {
-				console.log(body);
-			});
-
-			// we can also pass the token to the browser to make requests from there
-			urlParams.append('access_token', accessToken);
-			urlParams.append('refresh_token', refreshToken);
-
-			// res.redirect('http://localhost:3000' + urlParams.toString());
-		} else {
-			urlParams.append('error', 'invalid_token');
-		}
-
-		res.redirect('http://localhost:3000' + urlParams.toString());
-    });
-  }
+			setTimeout(() => {
+				io.emit(Events.Authorization, response.data);
+			}, 3000);
+		})
+		.catch(error => {
+			console.log('error', error);
+		});
+  	}
 });

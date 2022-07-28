@@ -3,6 +3,7 @@ export enum Events {
 	Disconnect = 'disconnect',
 	GameState = 'gameState',
 	PlayersList = 'playersList',
+	Authorization = 'authorization',
 }
 
 export enum PlayerEvents {
