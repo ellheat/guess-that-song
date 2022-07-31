@@ -73,6 +73,7 @@
     "@storybook/addon-actions": "^6.3.6",
     "@storybook/addon-essentials": "^6.3.6",
     "@storybook/addon-links": "^6.3.6",
-    "@storybook/node-logger": "^6.3.6"
+    "@storybook/node-logger": "^6.3.6",
+    "@types/spotify-web-playback-sdk": "^0.1.12"
   }
 }

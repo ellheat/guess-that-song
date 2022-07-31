@@ -6,6 +6,7 @@ import { PreRound } from './preRound';
 import { QUIZ_STATES } from './constants';
 import type { AnswerType } from './types';
 import type { RoundDataType } from './round/types';
+import { useSpotifyPlayer } from './useSpotifyPlayer';
 
 
 export const Quiz = () => {
@@ -15,6 +16,12 @@ export const Quiz = () => {
     const [roundTime, setRoundTime] = useState<number>(30);
     const [answers, setAnswers] = useState<AnswerType[]>([]);
     const [trackUrl, setTrackUrl] = useState<string>('');
+
+    const { player, isReady, deviceId } = useSpotifyPlayer();
+
+    console.log('player', player);
+    console.log('isReady', isReady);
+    console.log('deviceId', deviceId);
 
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {

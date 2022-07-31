@@ -31,7 +31,10 @@ export class Spotify {
 
 	getSpotifyToken = async () => {
 		await this.spotifyApi.clientCredentialsGrant().then(
-			(data: SpotifyData) => this.spotifyApi.setAccessToken(data.body.access_token),
+			(data: SpotifyData) => {
+				console.log('access token', data.body.access_token);
+				this.spotifyApi.setAccessToken(data.body.access_token);
+			},
 			(err: object) => console.log('Something went wrong!', err)
 		);
 	}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Bar, AudioPlayerWrapper } from './round.styles';
 import { AnswerType } from './types';
 import { Answers } from '../../../../components/answers';
