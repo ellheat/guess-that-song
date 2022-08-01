@@ -26,6 +26,7 @@ export class Spotify {
 		this.spotifyApi = new SpotifyWebApi({
 			clientId: process.env.CLIENT_ID,
 			clientSecret: process.env.CLIENT_SECRET,
+			redirectUri: 'http://localhost:8080/callback'
 		});
 	}
 
@@ -34,6 +35,17 @@ export class Spotify {
 			(data: SpotifyData) => {
 				console.log('access token', data.body.access_token);
 				this.spotifyApi.setAccessToken(data.body.access_token);
+			},
+			(err: object) => console.log('Something went wrong!', err)
+		);
+	}
+
+	getSpotifyAuthorizationToken = async (authorizationCode: string) => {
+		await this.spotifyApi.authorizationCodeGrant(authorizationCode).then(
+			(data: SpotifyData) => {
+				console.log('access token', data.body.access_token);
+				this.spotifyApi.setAccessToken(data.body.access_token);
+				// this.spotifyApi.setRefreshToken(data.body.refresh_token);
 			},
 			(err: object) => console.log('Something went wrong!', err)
 		);

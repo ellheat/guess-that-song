@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-const TOKEN = 'BQBHPdib_sXiiIi-KOO_rjtE4toKgzfYFalFDTpQ0Uya74gFhz12pxfS-PjeiNAXetk8CPJHU6eKUW0Q4mI8UE8CqJstO4gMPqm4Lz0srxjGUYxGLUc';
+const TOKEN = 'BQANQe4wEj7ehocUo6PM6OT01uDyj8rYdv_h6IdMsRAvWKBd2Ja4Fj9n3y_UmG7gDPhQbOsOfmNUbdmteXjKfS9d7ywG4P6A7pdQSrlkxsx094GkoTGuz-kakwmVxHVI3jjYuP62uCRbXF5KVWsVlHaS3RSyIjgnB9O1J2Lxf0_BORmbcsk0qIqM2ZsJ_jbyWhuZUtsFRNv10ZGUIf1OZRU';
 
 const initSpotifyPlayer = () => {
 	return new Spotify.Player({
