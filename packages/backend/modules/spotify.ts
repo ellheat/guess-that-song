@@ -8,8 +8,10 @@ import { TrackType } from '../types/track';
 type SpotifyData = {
 	body: {
 		access_token: string,
-		token_type: string,
 		expires_in: number
+		refresh_token: string,
+		scope: string,
+		token_type: string,
 	},
 	statusCode: number
 }
@@ -33,7 +35,6 @@ export class Spotify {
 	getSpotifyToken = async () => {
 		await this.spotifyApi.clientCredentialsGrant().then(
 			(data: SpotifyData) => {
-				console.log('access token', data.body.access_token);
 				this.spotifyApi.setAccessToken(data.body.access_token);
 			},
 			(err: object) => console.log('Something went wrong!', err)
@@ -43,13 +44,14 @@ export class Spotify {
 	getSpotifyAuthorizationToken = async (authorizationCode: string) => {
 		await this.spotifyApi.authorizationCodeGrant(authorizationCode).then(
 			(data: SpotifyData) => {
-				console.log('access token', data.body.access_token);
 				this.spotifyApi.setAccessToken(data.body.access_token);
-				// this.spotifyApi.setRefreshToken(data.body.refresh_token);
+				this.spotifyApi.setRefreshToken(data.body.refresh_token);
 			},
 			(err: object) => console.log('Something went wrong!', err)
 		);
 	}
+
+	getAccessToken = async () => this.spotifyApi.getAccessToken();
 
 	getPlaylist = () => this.playlist;
 

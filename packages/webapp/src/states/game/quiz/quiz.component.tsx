@@ -17,11 +17,7 @@ export const Quiz = () => {
     const [answers, setAnswers] = useState<AnswerType[]>([]);
     const [trackUrl, setTrackUrl] = useState<string>('');
 
-    const { player, isReady, deviceId } = useSpotifyPlayer();
-
-    console.log('player', player);
-    console.log('isReady', isReady);
-    console.log('deviceId', deviceId);
+    useSpotifyPlayer();
 
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {

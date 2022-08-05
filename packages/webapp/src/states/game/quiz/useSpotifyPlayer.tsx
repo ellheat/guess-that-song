@@ -6,21 +6,10 @@ declare global {
   }
 }
 
-const TOKEN = 'BQANQe4wEj7ehocUo6PM6OT01uDyj8rYdv_h6IdMsRAvWKBd2Ja4Fj9n3y_UmG7gDPhQbOsOfmNUbdmteXjKfS9d7ywG4P6A7pdQSrlkxsx094GkoTGuz-kakwmVxHVI3jjYuP62uCRbXF5KVWsVlHaS3RSyIjgnB9O1J2Lxf0_BORmbcsk0qIqM2ZsJ_jbyWhuZUtsFRNv10ZGUIf1OZRU';
-
-const initSpotifyPlayer = () => {
-	return new Spotify.Player({
-		name: 'Guess That Song player',
-		getOAuthToken: async cb => cb(TOKEN),
-		volume: 0.5,
-	});
-}
-
 export const useSpotifyPlayer = () => {
-	const [isReady, setIsReady] = useState(false);
+	const [isInitialized, setIsInitialized] = useState(false);
 	const [deviceId, setDeviceId] = useState<string>('');
 	const playerRef = useRef<Spotify.Player | null>(null);
-
 
 	useEffect(() => {
 		if (!window.Spotify) {
@@ -29,51 +18,87 @@ export const useSpotifyPlayer = () => {
 
 			document.head!.appendChild(scriptTag);
 
-			(window as any).onSpotifyWebPlaybackSDKReady = () => {
-				playerRef.current = initSpotifyPlayer();
-				setIsReady(true);
+			window.onSpotifyWebPlaybackSDKReady = () => {
+				playerRef.current = new Spotify.Player({
+				name: 'Guess That Song player',
+				getOAuthToken: async (cb) => {
+						const { accessToken } = await fetch('http://localhost:8080/token', {
+							method: 'GET',
+							mode: 'cors',
+							headers: {
+								'Content-Type': 'application/json',
+							}
+						}).then((response) => response.json());
+
+						cb(accessToken);
+					},
+					volume: 0.5,
+				});
+				setIsInitialized(true);
 			};
 		}
 	}, []);
 
 	const handleReady = useCallback(({ device_id: deviceId }) => {
-		console.log('deviceId', deviceId);
+		console.log('deviceId: ', deviceId);
 		setDeviceId(deviceId);
 	}, []);
 
+	const handleNotReady = useCallback(({ device_id: deviceId }) => {
+		console.log('Device ID has gone offline', deviceId);
+	}, []);
+
+	const accountError = useCallback(({ message }) => {
+		console.error(message);
+	}, []);
+
 	useEffect(() => {
-		const player = playerRef.current!
-
-		if (isReady) {
-			player.connect();
-			console.log('asd');
-
-			player.addListener('ready', handleReady);
-
-			player.addListener('initialization_error', ({ message }) => {
-				console.warn(message);
-			});
-
-			player.addListener('authentication_error', ({ message }) => {
-				console.warn(message);
-			});
-
-			player.addListener('account_error', ({ message }) => {
-				console.warn(message);
+		if (isInitialized) {
+			playerRef.current!.connect().then((isSuccess: boolean) => {
+				if (isSuccess) {
+					console.log('The Web Playback SDK successfully connected to Spotify!');
+				};
 			});
 
 			return () => {
-				player.removeListener('account_error');
-				player.removeListener('authentication_error');
-				player.removeListener('initialization_error');
+				playerRef.current!.disconnect();
+			}
+		}
+	}, [isInitialized]);
+
+	useEffect(() => {
+		if (deviceId) {
+			playerRef.current!.togglePlay();
+		}
+	}, [deviceId]);
+
+	useEffect(() => {
+		const player = playerRef.current!;
+
+		if (isInitialized) {
+			player.addListener('ready', handleReady);
+
+			player.addListener('not_ready', handleNotReady);
+
+			player.addListener('initialization_error', accountError);
+
+			player.addListener('authentication_error', accountError);
+
+			player.addListener('account_error', accountError);
+
+			return () => {
+				player.removeListener('account_error', accountError);
+				player.removeListener('authentication_error', accountError);
+				player.removeListener('initialization_error', accountError);
 				player.removeListener('ready', handleReady);
+				player.removeListener('not_ready', handleNotReady);
 			};
 		}
-	}, [handleReady, isReady]);
+	}, [handleReady, handleNotReady, accountError, isInitialized]);
 
 	return {
 		player: playerRef.current,
 		deviceId,
-		isReady,
+		isInitialized,
 	};
 }

@@ -22,8 +22,9 @@ export const Game = () => {
 	return (
 		<Wrapper>
 			<Container>
-				{state === GameStates.Lobby && <Lobby list={players} />}
-				{state === GameStates.Quiz && <Quiz />}
+				{/* {state === GameStates.Lobby && <Lobby list={players} />}
+				{state === GameStates.Quiz && <Quiz />} */}
+				<Quiz />
 			</Container>
 		</Wrapper>
 	);
