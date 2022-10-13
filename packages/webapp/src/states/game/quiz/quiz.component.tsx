@@ -17,7 +17,43 @@ export const Quiz = () => {
     const [answers, setAnswers] = useState<AnswerType[]>([]);
     const [trackUrl, setTrackUrl] = useState<string>('');
 
-    useSpotifyPlayer();
+    const { player, deviceId } = useSpotifyPlayer();
+
+    const setNewName = () => {
+        player?.setName('asd').then(() => console.log('Player name updated!'));
+    }
+
+    const getVolume = () => {
+        player?.getVolume().then((volume) => console.log('Volume: ', volume * 100));
+    }
+
+    const handleConnect = () => {
+        player?.connect();
+    }
+
+    const handleActivate = () => {
+        //@ts-ignore
+        player?.activateElement();
+    }
+
+    const handlePlay = () => {
+        player?.togglePlay();
+    }
+
+    const getCurrentState = () => {
+        player?.getCurrentState().then(state => {
+            if (!state) {
+                console.error('User is not playing music through the Web Playback SDK');
+                return;
+            }
+
+            const current_track = state.track_window.current_track;
+            const next_track = state.track_window.next_tracks[0];
+
+            console.log('Currently Playing', current_track);
+            console.log('Playing Next', next_track);
+        });
+    }
 
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {
@@ -48,6 +84,12 @@ export const Quiz = () => {
 
     return (
         <>
+            <button onClick={handleConnect}>Connect</button>
+            <button onClick={setNewName}>Set Name</button>
+            <button onClick={getVolume}>Get Volume</button>
+            <button onClick={handleActivate}>Activate</button>
+            <button onClick={handlePlay}>Toggle Play</button>
+            <button onClick={getCurrentState}>getCurrentState</button>
             {quizState === QUIZ_STATES.PreRound && <PreRound time={preRoundTime} />}
             {quizState === QUIZ_STATES.Round && <Round answers={answers} roundNumber={roundNumber} time={roundTime} trackUrl={trackUrl} />}
         </>

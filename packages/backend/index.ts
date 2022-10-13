@@ -59,8 +59,11 @@ app.get('/login', (req, res) => {
 
 app.get('/callback', async (req, res) => {
 	const code = req.query.code || null;
+	const redirectUri = 'http://localhost:3000';
 
-  	spotify.getSpotifyAuthorizationToken(`${code}`);
+  	spotify.getSpotifyAuthorizationToken(`${code}`).then(() => {
+		res.redirect(redirectUri);
+	});
 });
 
 app.get('/token', async (req, res) => {

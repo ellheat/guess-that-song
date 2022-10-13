@@ -20,28 +20,29 @@ export const useSpotifyPlayer = () => {
 
 			window.onSpotifyWebPlaybackSDKReady = () => {
 				playerRef.current = new Spotify.Player({
-				name: 'Guess That Song player',
-				getOAuthToken: async (cb) => {
-						const { accessToken } = await fetch('http://localhost:8080/token', {
-							method: 'GET',
-							mode: 'cors',
-							headers: {
-								'Content-Type': 'application/json',
-							}
-						}).then((response) => response.json());
+					name: 'Guess That Song player',
+					volume: 1,
+					getOAuthToken: async (cb) => {
+							const { accessToken } = await fetch('http://localhost:8080/token', {
+								method: 'GET',
+								mode: 'cors',
+								headers: {
+									'Content-Type': 'application/json',
+								}
+							}).then((response) => response.json());
 
 						cb(accessToken);
-					},
-					volume: 0.5,
-				});
+						},
+					});
 				setIsInitialized(true);
 			};
 		}
 	}, []);
 
 	const handleReady = useCallback(({ device_id: deviceId }) => {
-		console.log('deviceId: ', deviceId);
 		setDeviceId(deviceId);
+		console.log('The Web Playback SDK is ready to play music!');
+		console.log('deviceId: ', deviceId);
 	}, []);
 
 	const handleNotReady = useCallback(({ device_id: deviceId }) => {
@@ -66,11 +67,11 @@ export const useSpotifyPlayer = () => {
 		}
 	}, [isInitialized]);
 
-	useEffect(() => {
-		if (deviceId) {
-			playerRef.current!.togglePlay();
-		}
-	}, [deviceId]);
+	// useEffect(() => {
+	// 	if (deviceId) {
+	// 		playerRef.current!.togglePlay();
+	// 	}
+	// }, [deviceId]);
 
 	useEffect(() => {
 		const player = playerRef.current!;
