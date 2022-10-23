@@ -10,7 +10,7 @@
   "scripts": {
     "start:backend": "cd packages/backend && npm run start",
     "start:webapp": "cd packages/webapp && npm run start",
-    "storybook": "cd packages/webapp && npm run storybook",
+    "start:storybook": "cd packages/webapp && npm run storybook",
     "dependencies:ci": "rm -rf node_modules && rm -rf */*/node_modules && npm ci --no-audit --no-fund"
   },
   "repository": {
@@ -18,5 +18,8 @@
     "url": "git+https://github.com/ellheat/guess-that-song.git"
   },
   "license": "ISC",
-  "homepage": "https://github.com/ellheat/guess-that-song#readme"
+  "homepage": "https://github.com/ellheat/guess-that-song#readme",
+  "devDependencies": {
+    "prettier": "2.7.1"
+  }
 }
