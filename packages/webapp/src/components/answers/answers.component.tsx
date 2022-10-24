@@ -5,11 +5,7 @@ import { ButtonSize } from '../button/button.types';
 import type { PlayerAnswer } from '../../states/player/quiz/quiz.type';
 import type { AnswerType } from '../../states/game/quiz/types';
 
-export type AnswersProps<
-	T =
-		| AnswerType
-		| PlayerAnswer
-> = {
+export type AnswersProps<T = AnswerType | PlayerAnswer> = {
     answers: T[];
     onClick?: (id: string) => void;
     disabled?: boolean;
@@ -30,5 +26,5 @@ export const Answers = ({ answers, onClick, disabled, isHide }: AnswersProps) =>
                 </Button>
             ))}
         </Container>
-  );
-}
+    );
+};
