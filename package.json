@@ -21,5 +21,8 @@
     "homepage": "https://github.com/ellheat/guess-that-song#readme",
     "devDependencies": {
         "prettier": "2.7.1"
+    },
+    "overrides": {
+        "react-refresh": "0.11.0"
     }
 }
