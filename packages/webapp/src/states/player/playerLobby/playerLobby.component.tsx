@@ -1,20 +1,20 @@
 import React from 'react';
 
-import { Container, Text, Button } from './playerLobby.styles';
+import { Wrapper, Text, Button } from './playerLobby.styles';
 import { socket } from '../../../utils/socket';
 import { PlayerEvents } from '../../../config/events';
 
 interface PlayerLobbyProps {
-  isReady?: boolean;
+    isReady?: boolean;
 }
 
 export const PlayerLobby = ({ isReady }: PlayerLobbyProps) => {
-  const handleClick = () => socket.emit(PlayerEvents.Ready);
+    const handleClick = () => socket.emit(PlayerEvents.Ready);
 
-  return (
-    <Container>
-      <Text>Lobby</Text>
-      <Button onClick={handleClick}>Ready</Button>
-    </Container>
-  );
-}
+    return (
+        <Wrapper>
+            <Text>When you're ready click button below</Text>
+            <Button onClick={handleClick}>Ready</Button>
+        </Wrapper>
+    );
+};

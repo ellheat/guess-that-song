@@ -7,26 +7,26 @@ import { RoundDataType } from '../../game/quiz/round/types';
 import { AnswerType } from '../../game/quiz/types';
 
 export const Quiz = () => {
-	const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
-	const [answers, setAnswers] = useState<AnswerType[]>([]);
-	const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
+    const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
+    const [answers, setAnswers] = useState<AnswerType[]>([]);
+    const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
 
-	const handleAnswer = (id: string) => {
-		socket.emit(PlayerEvents.Answer, id);
-		setAreAnswersBlocked(true);
-	};
+    const handleAnswer = (id: string) => {
+        socket.emit(PlayerEvents.Answer, id);
+        setAreAnswersBlocked(true);
+    };
 
-	useEffect(() => {
+    useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ answers }: RoundDataType) => {
-			setAreAnswersBlocked(true);
+            setAreAnswersBlocked(true);
             setAnswers(answers);
         });
 
         socket.on(QuizEvents.StartRound, () => {
-			setAreAnswersBlocked(false);
+            setAreAnswersBlocked(false);
         });
 
-		socket.on(QuizEvents.RoundTimer, () => {
+        socket.on(QuizEvents.RoundTimer, () => {
             setQuizState(QUIZ_STATES.Round);
         });
 
@@ -42,10 +42,12 @@ export const Quiz = () => {
         };
     }, []);
 
-	return (
-		<>
+    return (
+        <>
             {quizState === QUIZ_STATES.PreRound && <div>be ready!</div>}
-            {quizState === QUIZ_STATES.Round && <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} isHide />}
+            {quizState === QUIZ_STATES.Round && (
+                <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} areTitleHidden />
+            )}
         </>
-	);
-}
+    );
+};

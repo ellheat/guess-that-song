@@ -9,10 +9,10 @@ export type AnswersProps<T = AnswerType | PlayerAnswer> = {
     answers: T[];
     onClick?: (id: string) => void;
     disabled?: boolean;
-    isHide?: boolean;
+    areTitleHidden?: boolean;
 };
 
-export const Answers = ({ answers, onClick, disabled, isHide }: AnswersProps) => {
+export const Answers = ({ answers, onClick, disabled, areTitleHidden }: AnswersProps) => {
     return (
         <Container>
             {answers.map(({ title, id }, key) => (
@@ -22,7 +22,7 @@ export const Answers = ({ answers, onClick, disabled, isHide }: AnswersProps) =>
                     onClick={onClick ? () => onClick(id) : undefined}
                     disabled={disabled}
                 >
-                    {isHide ? key + 1 : `${key + 1}. ${title}`}
+                    {areTitleHidden ? key + 1 : `${key + 1}. ${title}`}
                 </Button>
             ))}
         </Container>

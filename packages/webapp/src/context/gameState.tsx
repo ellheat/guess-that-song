@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect } from 'react';
+import React, { createContext, ReactNode, useEffect } from 'react';
 import { useMachine } from '@xstate/react';
 import { StateValue } from 'xstate';
 
