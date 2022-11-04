@@ -6,9 +6,15 @@ import { PlayerEvents, QuizEvents } from '../../../config/events';
 import { RoundDataType } from '../../game/quiz/round/types';
 import { AnswerType } from '../../game/quiz/types';
 
-export const Quiz = () => {
-    const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
-    const [answers, setAnswers] = useState<AnswerType[]>([]);
+type QuizProps = {
+    state?: QUIZ_STATES;
+    quizAnswers?: AnswerType[];
+    areTitlesHidden?: boolean;
+};
+
+export const Quiz = ({ state = QUIZ_STATES.PreRound, quizAnswers = [], areTitlesHidden = true }: QuizProps) => {
+    const [quizState, setQuizState] = useState<QUIZ_STATES>(state);
+    const [answers, setAnswers] = useState<AnswerType[]>(quizAnswers);
     const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
 
     const handleAnswer = (id: string) => {
@@ -46,7 +52,12 @@ export const Quiz = () => {
         <>
             {quizState === QUIZ_STATES.PreRound && <div>be ready!</div>}
             {quizState === QUIZ_STATES.Round && (
-                <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} areTitleHidden />
+                <Answers
+                    answers={answers}
+                    onClick={handleAnswer}
+                    disabled={areAnswersBlocked}
+                    areTitlesHidden={areTitlesHidden}
+                />
             )}
         </>
     );

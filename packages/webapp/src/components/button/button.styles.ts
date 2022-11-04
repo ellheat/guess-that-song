@@ -37,6 +37,7 @@ const fullSizeButtonStyle = css`
         height: 100%;
         font-size: 40px;
         line-height: 48px;
+        padding: 0 48px;
     }
 `;
 

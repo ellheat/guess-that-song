@@ -4,18 +4,22 @@ import { black, white } from '../../../../theme/colors';
 export const Container = styled.div``;
 
 export const Bar = styled.div`
-  padding-top: 16px;
-  padding-bottom: 16px;
-  color: ${white};
-  background-color: ${black};
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    color: ${white};
+    background-color: ${black};
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
 `;
 
 export const AudioPlayerWrapper = styled.div`
     display: none;
+`;
+
+export const AnswersWrapper = styled.div`
+    padding: 64px;
 `;

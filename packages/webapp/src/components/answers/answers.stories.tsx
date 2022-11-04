@@ -18,5 +18,5 @@ Default.args = {
 export const HiddenTitles = Template.bind({});
 HiddenTitles.args = {
     answers: ANSWERS,
-    areTitleHidden: true,
+    areTitlesHidden: true,
 };

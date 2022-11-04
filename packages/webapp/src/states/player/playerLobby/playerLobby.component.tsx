@@ -13,7 +13,7 @@ export const PlayerLobby = ({ isReady }: PlayerLobbyProps) => {
 
     return (
         <Wrapper>
-            <Text>When you're ready click button below</Text>
+            <Text>When you're ready click the button below</Text>
             <Button onClick={handleClick}>Ready</Button>
         </Wrapper>
     );
