@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Bar, AudioPlayerWrapper, AnswersWrapper } from './round.styles';
+import { Container, Bar, AudioPlayerWrapper, AnswersWrapper, Timer } from './round.styles';
 import { AnswerType } from './types';
 import { Answers } from '../../../../components/answers';
 import { AudioPlayer } from '../../../../components/audioPlayer';
@@ -18,7 +18,7 @@ export const Round = ({ answers, roundNumber, time, trackUrl }: RoundProps) => {
                 <AudioPlayer url={trackUrl} />
             </AudioPlayerWrapper>
             <Bar>Round: {roundNumber}</Bar>
-            <Bar>Time: {time}</Bar>
+            <Timer time={time} />
             <AnswersWrapper>
                 <Answers answers={answers} />
             </AnswersWrapper>
