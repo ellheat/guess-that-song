@@ -2,7 +2,10 @@ import styled from 'styled-components';
 import { Timer as TimerComponent } from '../../../../components/timer';
 import { white } from '../../../../theme/colors';
 
-export const Container = styled.div``;
+export const Container = styled.section`
+    height: 100vh;
+    width: 100%;
+`;
 
 export const Bar = styled.div`
     padding-top: 16px;
@@ -23,13 +26,15 @@ export const AudioPlayerWrapper = styled.div`
 `;
 
 export const AnswersWrapper = styled.div`
+    position: relative;
     padding: 64px;
+    height: calc(100% - 192px);
 `;
 
 export const Timer = styled(TimerComponent)`
     position: absolute;
     left: 50%;
-    top: calc(50% + 50px);
-    transform: translate(-50%, calc(-50% + 50px));
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
 `;

@@ -18,8 +18,8 @@ export const Round = ({ answers, roundNumber, time, trackUrl }: RoundProps) => {
                 <AudioPlayer url={trackUrl} />
             </AudioPlayerWrapper>
             <Bar>Round: {roundNumber}</Bar>
-            <Timer time={time} />
             <AnswersWrapper>
+                <Timer time={time} />
                 <Answers answers={answers} />
             </AnswersWrapper>
         </Container>

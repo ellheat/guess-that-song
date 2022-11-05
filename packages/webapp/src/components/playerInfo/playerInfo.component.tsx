@@ -5,13 +5,9 @@ import { PlayerType } from '../../types';
 import { gray } from '../../theme/colors';
 
 interface PlayerInfoProps {
-  data?: PlayerType;
+    data?: PlayerType;
 }
 
 export const PlayerInfo = ({ data }: PlayerInfoProps) => {
-  return (
-    <Container color={data?.color || gray}>
-      {data?.name}
-    </Container>
-  );
-}
+    return <Container color={data?.color || gray}>{data?.name}</Container>;
+};

@@ -12,5 +12,5 @@ const Template: ComponentStory<typeof Timer> = (args) => <Timer {...args}>Button
 
 export const Default = Template.bind({});
 Default.args = {
-    time: 20,
+    time: 15,
 };
