@@ -14,8 +14,6 @@ export const addPlayer = (socket: Socket, io: Server, players: Players, characte
         console.log(colors.info(`${player.name} has been joined`));
         console.log(colors.info(`players: ${playersList.length}`));
 
-        console.log('player', player);
-
         socket.emit(PlayerEvents.Added, player);
         io.emit(Events.PlayersList, playersList);
     });
