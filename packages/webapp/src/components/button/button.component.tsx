@@ -11,12 +11,13 @@ export const Button = ({
     variant = ButtonVariant.Primary,
     size = ButtonSize.Small,
     disabled = false,
+    isAnswered = false,
 }: ButtonProps) => {
-    const theme: ButtonTheme = { variant, size, disabled };
+    const theme: ButtonTheme = { variant, size, disabled, isAnswered };
 
     return (
         <ThemeProvider theme={theme}>
-            <Wrapper className={className} disabled={disabled} onClick={onClick}>
+            <Wrapper className={className} isAnswered={isAnswered} disabled={disabled} onClick={onClick}>
                 <Container>{children}</Container>
             </Wrapper>
         </ThemeProvider>

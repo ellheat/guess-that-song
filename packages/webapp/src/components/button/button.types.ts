@@ -3,16 +3,18 @@ import { DefaultTheme } from 'styled-components';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
-    onClick?: () => void;
     disabled?: boolean;
-    variant?: ButtonVariant;
+    isAnswered?: boolean;
+    onClick?: () => void;
     size?: ButtonSize;
+    variant?: ButtonVariant;
 };
 
 export interface ButtonTheme extends DefaultTheme {
-    variant?: ButtonVariant;
-    size?: ButtonSize;
     disabled?: boolean;
+    isAnswered?: boolean;
+    size?: ButtonSize;
+    variant?: ButtonVariant;
 }
 
 export enum ButtonVariant {

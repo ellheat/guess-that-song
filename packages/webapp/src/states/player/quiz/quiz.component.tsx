@@ -5,6 +5,7 @@ import { socket } from '../../../utils/socket';
 import { PlayerEvents, QuizEvents } from '../../../config/events';
 import { RoundDataType } from '../../game/quiz/round/types';
 import { AnswerType } from '../../game/quiz/types';
+import { RoundWrapper, AnswersWrapper } from './quiz.styles';
 
 type QuizProps = {
     state?: QUIZ_STATES;
@@ -16,15 +17,18 @@ export const Quiz = ({ state = QUIZ_STATES.PreRound, quizAnswers = [], areTitles
     const [quizState, setQuizState] = useState<QUIZ_STATES>(state);
     const [answers, setAnswers] = useState<AnswerType[]>(quizAnswers);
     const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
+    const [isAnswered, setIsAnswered] = useState<string>('');
 
     const handleAnswer = (id: string) => {
-        socket.emit(PlayerEvents.Answer, id);
         setAreAnswersBlocked(true);
+        setIsAnswered(id);
+        socket.emit(PlayerEvents.Answer, id);
     };
 
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ answers }: RoundDataType) => {
             setAreAnswersBlocked(true);
+            setIsAnswered('');
             setAnswers(answers);
         });
 
@@ -50,14 +54,23 @@ export const Quiz = ({ state = QUIZ_STATES.PreRound, quizAnswers = [], areTitles
 
     return (
         <>
-            {quizState === QUIZ_STATES.PreRound && <div>be ready!</div>}
+            {quizState === QUIZ_STATES.PreRound && (
+                <RoundWrapper>
+                    <AnswersWrapper>be ready!</AnswersWrapper>
+                </RoundWrapper>
+            )}
             {quizState === QUIZ_STATES.Round && (
-                <Answers
-                    answers={answers}
-                    onClick={handleAnswer}
-                    disabled={areAnswersBlocked}
-                    areTitlesHidden={areTitlesHidden}
-                />
+                <RoundWrapper>
+                    <AnswersWrapper>
+                        <Answers
+                            answers={answers}
+                            isAnswered={isAnswered}
+                            onClick={handleAnswer}
+                            disabled={areAnswersBlocked}
+                            areTitlesHidden={areTitlesHidden}
+                        />
+                    </AnswersWrapper>
+                </RoundWrapper>
             )}
         </>
     );

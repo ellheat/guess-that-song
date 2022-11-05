@@ -6,5 +6,6 @@ export const Container = styled.div`
     grid-template-rows: 1fr 1fr;
     grid-gap: 32px;
     width: 100%;
-    height: 100%;
+    height: -webkit-fill-available;
+    min-height: 100%;
 `;

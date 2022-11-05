@@ -5,7 +5,6 @@ import { Quiz } from './quiz.component';
 import { withGlobalStyles } from '../../../utils/storybook/decorators';
 import { QUIZ_STATES } from './quiz.constants';
 import { ANSWERS } from '../../../components/answers/mocks/answers';
-import { Container } from '../../../routes/home/player/player.styles';
 
 export default {
     title: 'States/Player/Quiz',
@@ -13,11 +12,7 @@ export default {
     decorators: [withGlobalStyles],
 } as ComponentMeta<typeof Quiz>;
 
-const Template: ComponentStory<typeof Quiz> = (args) => (
-    <Container style={{ height: '100vh' }}>
-        <Quiz {...args} />
-    </Container>
-);
+const Template: ComponentStory<typeof Quiz> = (args) => <Quiz {...args} />;
 
 export const PreRound = Template.bind({});
 PreRound.args = {

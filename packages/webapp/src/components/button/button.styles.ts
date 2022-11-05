@@ -41,7 +41,7 @@ const fullSizeButtonStyle = css`
     }
 `;
 
-const primaryBaseButtonStyle = css`
+const primaryBaseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
     background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
     border-radius: 8px;
     border: 0;
@@ -71,23 +71,16 @@ const primaryBaseButtonStyle = css`
 
     ${Container} {
         align-items: center;
-        background-color: ${colors.primary};
+        background: ${isAnswered ? 'none' : colors.primary};
         border-radius: 6px;
         display: flex;
         justify-content: center;
         width: 100%;
         transition: 0.3s;
     }
-
-    &:active,
-    &:hover {
-        ${Container} {
-            background: none;
-        }
-    }
 `;
 
-const baseButtonStyle = css`
+const baseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
     box-sizing: border-box;
     cursor: pointer;
     text-decoration: none;
@@ -95,7 +88,7 @@ const baseButtonStyle = css`
     user-select: none;
 
     ${theme('variant', {
-        [ButtonVariant.Primary]: primaryBaseButtonStyle,
+        [ButtonVariant.Primary]: primaryBaseButtonStyle({ isAnswered }),
     })};
 
     ${theme('size', {
@@ -106,6 +99,6 @@ const baseButtonStyle = css`
     })};
 `;
 
-export const Wrapper = styled.button<ButtonThemeProps>`
-    ${baseButtonStyle}
+export const Wrapper = styled.button<ButtonThemeProps & { isAnswered: boolean }>`
+    ${({ isAnswered }) => baseButtonStyle({ isAnswered })}
 `;
