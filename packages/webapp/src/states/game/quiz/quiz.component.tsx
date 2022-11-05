@@ -7,14 +7,29 @@ import { QUIZ_STATES } from './constants';
 import type { AnswerType } from './types';
 import type { RoundDataType } from './round/types';
 
+type QuizProps = {
+    state?: QUIZ_STATES;
+    quizRound?: number;
+    quizPreRoundTime?: number;
+    quizRoundTime?: number;
+    quizAnswers?: AnswerType[];
+    quizTrackUrl?: string;
+};
 
-export const Quiz = () => {
-    const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
-    const [roundNumber, setRoundNumber] = useState<number>(0);
-    const [preRoundTime, setPreRoundTime] = useState<number>(3);
-    const [roundTime, setRoundTime] = useState<number>(30);
-    const [answers, setAnswers] = useState<AnswerType[]>([]);
-    const [trackUrl, setTrackUrl] = useState<string>('');
+export const Quiz = ({
+    quizAnswers = [],
+    quizPreRoundTime = 3,
+    quizRound = 1,
+    quizRoundTime = 10,
+    quizTrackUrl = '',
+    state = QUIZ_STATES.PreRound,
+}: QuizProps) => {
+    const [quizState, setQuizState] = useState<QUIZ_STATES>(state);
+    const [roundNumber, setRoundNumber] = useState<number>(quizRound);
+    const [preRoundTime, setPreRoundTime] = useState<number>(quizPreRoundTime);
+    const [roundTime, setRoundTime] = useState<number>(quizRoundTime);
+    const [answers, setAnswers] = useState<AnswerType[]>(quizAnswers);
+    const [trackUrl, setTrackUrl] = useState<string>(quizTrackUrl);
 
     useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ round, answers }: RoundDataType) => {
@@ -46,7 +61,9 @@ export const Quiz = () => {
     return (
         <>
             {quizState === QUIZ_STATES.PreRound && <PreRound time={preRoundTime} />}
-            {quizState === QUIZ_STATES.Round && <Round answers={answers} roundNumber={roundNumber} time={roundTime} trackUrl={trackUrl} />}
+            {quizState === QUIZ_STATES.Round && (
+                <Round answers={answers} roundNumber={roundNumber} time={roundTime} trackUrl={trackUrl} />
+            )}
         </>
     );
-}
+};

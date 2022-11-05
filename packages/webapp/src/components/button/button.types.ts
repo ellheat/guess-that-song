@@ -2,32 +2,28 @@ import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { DefaultTheme } from 'styled-components';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  color?: ButtonColor;
-}
+    children: ReactNode;
+    disabled?: boolean;
+    isAnswered?: boolean;
+    onClick?: () => void;
+    size?: ButtonSize;
+    variant?: ButtonVariant;
+};
 
 export interface ButtonTheme extends DefaultTheme {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  color?: ButtonColor | string;
-  disabled?: boolean;
+    disabled?: boolean;
+    isAnswered?: boolean;
+    size?: ButtonSize;
+    variant?: ButtonVariant;
 }
 
 export enum ButtonVariant {
-  Primary = 'Primary',
+    Primary = 'Primary',
 }
 
 export enum ButtonSize {
-  Small = 'Small',
-  Medium = 'Medium',
-  Large = 'Large',
-  Full = 'Full',
-}
-
-export enum ButtonColor {
-  Primary = 'Primary',
+    Small = 'Small',
+    Medium = 'Medium',
+    Large = 'Large',
+    Full = 'Full',
 }

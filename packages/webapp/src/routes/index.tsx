@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { AppComponent as App } from './app.component';
@@ -9,13 +10,8 @@ export const Main = () => {
     return (
         <App>
             <Routes>
-                <Route path={ROUTES.home}>
-                    <Home />
-                </Route>
-
-                <Route>
-                    <NotFound />
-                </Route>
+                <Route path={ROUTES.home} element={<Home />}></Route>
+                <Route element={<NotFound />}></Route>
             </Routes>
         </App>
     );

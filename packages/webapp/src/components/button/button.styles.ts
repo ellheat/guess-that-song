@@ -1,64 +1,104 @@
 import styled, { css, ThemeProps } from 'styled-components';
 import theme from 'styled-theming';
+import * as colors from '../../theme/colors';
 import { ButtonSize, ButtonTheme, ButtonVariant } from './button.types';
 
 type ButtonThemeProps = ThemeProps<ButtonTheme>;
 
+export const Container = styled.span``;
 
 const smallSizeButtonStyle = css`
-  padding: 8px 24px;
-  font-size: 12px;
+    ${Container} {
+        padding: 16px 24px;
+        font-size: 16px;
+        line-height: 24px;
+    }
 `;
 
 const mediumSizeButtonStyle = css`
-  padding: 16px 40px;
-  font-size: 14px;
+    ${Container} {
+        padding: 24px 40px;
+        font-size: 24px;
+        line-height: 32px;
+    }
 `;
 
 const largeSizeButtonStyle = css`
-  padding: 24px 56px;
-  font-size: 16px;
+    ${Container} {
+        padding: 32px 56px;
+        font-size: 32px;
+        line-height: 40px;
+    }
 `;
 
 const fullSizeButtonStyle = css`
-  width: 100%;
-  height: 100%;
-  font-size: 32px;
+    ${Container} {
+        width: 100%;
+        height: 100%;
+        font-size: 40px;
+        line-height: 48px;
+        padding: 0 48px;
+    }
 `;
 
-const primaryBaseButtonStyle = css``;
+const primaryBaseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
+    background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+    border-radius: 8px;
+    border: 0;
+    color: #ffffff;
+    display: flex;
+    padding: 4px;
+    position: relative;
 
-const baseButtonStyle = css`
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+    &:before {
+        background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+        content: '';
+        filter: blur(20px);
+        height: 100%;
+        left: 0;
+        opacity: 1;
+        position: absolute;
+        top: 0;
+        transition: opacity 0.3s;
+        width: 100%;
+        z-index: -1;
+    }
 
-  color: white;
-  background-color: blue;
-  border-color: blue;
-  border-width: 1px;
-  border-style: solid;
-  
-  ${(props: ButtonThemeProps) => props.theme.disabled && css`
-    color: white;
-    background-color: gray;
-    border-color: gray;
-  `}
+    &:active,
+    &:hover {
+        outline: 0;
+    }
 
-  ${theme('variant', {
-    [ButtonVariant.Primary]: primaryBaseButtonStyle,
-  })};
-
-  ${theme('size', {
-    [ButtonSize.Small]: smallSizeButtonStyle,
-    [ButtonSize.Medium]: mediumSizeButtonStyle,
-    [ButtonSize.Large]: largeSizeButtonStyle,
-    [ButtonSize.Full]: fullSizeButtonStyle,
-  })};
+    ${Container} {
+        align-items: center;
+        background: ${isAnswered ? 'none' : colors.primary};
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        transition: 0.3s;
+    }
 `;
 
-export const Container = styled.button<ButtonThemeProps>`
-  ${baseButtonStyle}
+const baseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
+    box-sizing: border-box;
+    cursor: pointer;
+    text-decoration: none;
+    touch-action: manipulation;
+    user-select: none;
+
+    ${theme('variant', {
+        [ButtonVariant.Primary]: primaryBaseButtonStyle({ isAnswered }),
+    })};
+
+    ${theme('size', {
+        [ButtonSize.Small]: smallSizeButtonStyle,
+        [ButtonSize.Medium]: mediumSizeButtonStyle,
+        [ButtonSize.Large]: largeSizeButtonStyle,
+        [ButtonSize.Full]: fullSizeButtonStyle,
+    })};
+`;
+
+export const Wrapper = styled.button<ButtonThemeProps & { isAnswered: boolean }>`
+    ${({ isAnswered }) => baseButtonStyle({ isAnswered })}
 `;

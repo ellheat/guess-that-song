@@ -12,27 +12,24 @@ import { Score } from '../../../states/player/score';
 import { PLAYER_DEFAULT_STATE } from './player.constants';
 import { Quiz } from '../../../states/player/quiz';
 
-
 export const Player = () => {
-  const { state } = useContext(GameStateContext);
-  const [playerData, setPlayerData] = useState<PlayerType>(PLAYER_DEFAULT_STATE);
+    const { state } = useContext(GameStateContext);
+    const [playerData, setPlayerData] = useState<PlayerType>(PLAYER_DEFAULT_STATE);
 
-  useEffect(() => {
-    socket
-      .emit(PlayerEvents.Add)
-      .on(PlayerEvents.Added, (player: PlayerType) => setPlayerData(player));
+    useEffect(() => {
+        socket.emit(PlayerEvents.Add).on(PlayerEvents.Added, (player: PlayerType) => setPlayerData(player));
 
-    socket.on(PlayerEvents.Data, (player: PlayerType) => setPlayerData(player));
-  }, []);
+        socket.on(PlayerEvents.Data, (player: PlayerType) => setPlayerData(player));
+    }, []);
 
-  return (
-    <Wrapper>
-      <PlayerInfo data={playerData} />
-      <Container>
-        {state === GameStates.Lobby && <PlayerLobby isReady={playerData.isReady} />}
-        {state === GameStates.Quiz && <Quiz />}
-        {state === GameStates.Leaderboard && <Score place={playerData?.place} points={playerData.points} />}
-      </Container>
-    </Wrapper>
-  );
-}
+    return (
+        <Wrapper>
+            <PlayerInfo data={playerData} />
+            <Container>
+                {state === GameStates.Lobby && <PlayerLobby isReady={playerData.isReady} />}
+                {state === GameStates.Quiz && <Quiz />}
+                {state === GameStates.Leaderboard && <Score place={playerData?.place} points={playerData.points} />}
+            </Container>
+        </Wrapper>
+    );
+};

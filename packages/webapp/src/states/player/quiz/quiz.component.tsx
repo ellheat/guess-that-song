@@ -5,28 +5,38 @@ import { socket } from '../../../utils/socket';
 import { PlayerEvents, QuizEvents } from '../../../config/events';
 import { RoundDataType } from '../../game/quiz/round/types';
 import { AnswerType } from '../../game/quiz/types';
+import { RoundWrapper, AnswersWrapper } from './quiz.styles';
 
-export const Quiz = () => {
-	const [quizState, setQuizState] = useState<QUIZ_STATES>(QUIZ_STATES.PreRound);
-	const [answers, setAnswers] = useState<AnswerType[]>([]);
-	const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
+type QuizProps = {
+    state?: QUIZ_STATES;
+    quizAnswers?: AnswerType[];
+    areTitlesHidden?: boolean;
+};
 
-	const handleAnswer = (id: string) => {
-		socket.emit(PlayerEvents.Answer, id);
-		setAreAnswersBlocked(true);
-	};
+export const Quiz = ({ state = QUIZ_STATES.PreRound, quizAnswers = [], areTitlesHidden = true }: QuizProps) => {
+    const [quizState, setQuizState] = useState<QUIZ_STATES>(state);
+    const [answers, setAnswers] = useState<AnswerType[]>(quizAnswers);
+    const [areAnswersBlocked, setAreAnswersBlocked] = useState<boolean>(false);
+    const [isAnswered, setIsAnswered] = useState<string>('');
 
-	useEffect(() => {
+    const handleAnswer = (id: string) => {
+        setAreAnswersBlocked(true);
+        setIsAnswered(id);
+        socket.emit(PlayerEvents.Answer, id);
+    };
+
+    useEffect(() => {
         socket.on(QuizEvents.InitRound, ({ answers }: RoundDataType) => {
-			setAreAnswersBlocked(true);
+            setAreAnswersBlocked(true);
+            setIsAnswered('');
             setAnswers(answers);
         });
 
         socket.on(QuizEvents.StartRound, () => {
-			setAreAnswersBlocked(false);
+            setAreAnswersBlocked(false);
         });
 
-		socket.on(QuizEvents.RoundTimer, () => {
+        socket.on(QuizEvents.RoundTimer, () => {
             setQuizState(QUIZ_STATES.Round);
         });
 
@@ -42,10 +52,26 @@ export const Quiz = () => {
         };
     }, []);
 
-	return (
-		<>
-            {quizState === QUIZ_STATES.PreRound && <div>be ready!</div>}
-            {quizState === QUIZ_STATES.Round && <Answers answers={answers} onClick={handleAnswer} disabled={areAnswersBlocked} isHide />}
+    return (
+        <>
+            {quizState === QUIZ_STATES.PreRound && (
+                <RoundWrapper>
+                    <AnswersWrapper>be ready!</AnswersWrapper>
+                </RoundWrapper>
+            )}
+            {quizState === QUIZ_STATES.Round && (
+                <RoundWrapper>
+                    <AnswersWrapper>
+                        <Answers
+                            answers={answers}
+                            isAnswered={isAnswered}
+                            onClick={handleAnswer}
+                            disabled={areAnswersBlocked}
+                            areTitlesHidden={areTitlesHidden}
+                        />
+                    </AnswersWrapper>
+                </RoundWrapper>
+            )}
         </>
-	);
-}
+    );
+};

@@ -14,4 +14,9 @@ const Template: ComponentStory<typeof Answers> = (args) => <Answers {...args} />
 export const Default = Template.bind({});
 Default.args = {
     answers: ANSWERS,
-}
+};
+export const HiddenTitles = Template.bind({});
+HiddenTitles.args = {
+    answers: ANSWERS,
+    areTitlesHidden: true,
+};
