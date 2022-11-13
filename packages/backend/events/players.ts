@@ -62,7 +62,6 @@ type playerAnswerProps = {
 export const playerAnswer = ({ socket, round, players, answers }: playerAnswerProps) => {
     const id = socket.id;
     socket.on(PlayerEvents.Answer, (answerId: string) => {
-        players.setAnswered(id);
         const correctAnswer = answers.get(round.roundNumber).find((answer) => answer.isCorrect);
 
         if (correctAnswer?.id === answerId) {
@@ -70,9 +69,9 @@ export const playerAnswer = ({ socket, round, players, answers }: playerAnswerPr
             const numberCorrectlyAnswers = playerList.filter((player) => player.isAnsweredCorrectly).length;
             const points = (round.roundTimer + 1) * (playerList.length - numberCorrectlyAnswers);
 
-            return players.addPoints(id, points);
+            return players.setAnswered(id, points);
         }
 
-        console.log('not correct');
+        players.setAnswered(id, 0);
     });
 };

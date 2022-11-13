@@ -19,8 +19,6 @@ const PLAYER_DEFAULT_VALUES = {
     isAnsweredCorrectly: false,
 };
 
-// type PlayerDefaultValuesTypes = keyof typeof PLAYER_DEFAULT_VALUES;
-
 export class Players {
     private list;
     public areAllReady: boolean;
@@ -74,15 +72,25 @@ export class Players {
         this.areAllReady = false;
     };
 
-    setAnswered = (id: string) => {
-        const player = Object.assign(this.getPlayer(id), { isAnswered: true });
-        this.list.set(id, player);
-        this.checkAreAllAnswered();
-    };
+    setAnswered = (id: string, points: number) => {
+        const isAnsweredCorrectly = !!points;
+        const player = this.getPlayer(id);
+        const playerNewData = Object.assign(player, {
+            points: player.points + points,
+            isAnswered: true,
+            isAnsweredCorrectly,
+        });
 
-    setAnsweredCorrectly = (id: string) => {
-        const player = Object.assign(this.getPlayer(id), { isAnsweredCorrectly: true });
-        this.list.set(id, player);
+        if (isAnsweredCorrectly) {
+            console.log(
+                `${player.name} has been answered correctly and received: ${points} | total points: ${player.points}`,
+            );
+        } else {
+            console.log(`${player.name} has been answered not correctly | total points: ${player.points}`);
+        }
+
+        this.list.set(id, playerNewData);
+        this.checkAreAllAnswered();
     };
 
     setAllUnanswered = () => {
@@ -91,19 +99,6 @@ export class Players {
             player.isAnsweredCorrectly = false;
         });
         this.areAllAnswered = false;
-    };
-
-    addPoints = (id: string, points: number) => {
-        this.setAnsweredCorrectly(id);
-        const player = this.getPlayer(id);
-        const playerNewData = Object.assign(player, { points: player.points + points });
-
-        console.log(
-            `${player.name} has been answered correctly and receive: ${points} | total points: ${player.points}`,
-        );
-
-        this.list.set(id, playerNewData);
-        return playerNewData;
     };
 
     clearQuizData = () => {
