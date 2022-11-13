@@ -3,6 +3,7 @@ import { Events, PlayerEvents } from '../config/events';
 import { colors } from '../config';
 import { Characters, Game, Players, Quiz } from '../modules';
 import { Answers } from '../modules/answers';
+import { Round } from '../modules/round';
 
 export const addPlayer = (socket: Socket, io: Server, players: Players, characters: Characters) => {
     const id = socket.id;
@@ -51,16 +52,25 @@ export const removePlayer = (socket: Socket, io: Server, players: Players) => {
     });
 };
 
-export const playerAnswer = (socket: Socket, io: Server, quiz: Quiz, players: Players, answers: Answers) => {
+type playerAnswerProps = {
+    answers: Answers;
+    players: Players;
+    round: Round;
+    socket: Socket;
+};
+
+export const playerAnswer = ({ socket, round, players, answers }: playerAnswerProps) => {
     const id = socket.id;
     socket.on(PlayerEvents.Answer, (answerId: string) => {
         players.setAnswered(id);
-        const correctAnswer = answers.get(quiz.roundNumber).find((answer) => answer.isCorrect);
+        const correctAnswer = answers.get(round.roundNumber).find((answer) => answer.isCorrect);
 
         if (correctAnswer?.id === answerId) {
-            console.log('correct');
-            players.addPoints(id);
-            return;
+            const playerList = players.getList();
+            const numberCorrectlyAnswers = playerList.filter((player) => player.isAnsweredCorrectly).length;
+            const points = (round.roundTimer + 1) * (playerList.length - numberCorrectlyAnswers);
+
+            return players.addPoints(id, points);
         }
 
         console.log('not correct');
