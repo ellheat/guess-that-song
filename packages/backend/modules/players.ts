@@ -3,22 +3,22 @@ import { PlayerEvents } from '../config/events';
 import { CharacterType } from './characters';
 
 interface PlayerType extends CharacterType {
-    id: string;
-    points: number;
     correctAnswers: number;
-    roundsWon: number;
-    isReady: boolean;
+    id: string;
     isAnswered: boolean;
     isAnsweredCorrectly: boolean;
+    isReady: boolean;
+    points: number;
+    roundsWon: number;
 }
 
 const PLAYER_DEFAULT_VALUES = {
-    points: 0,
     correctAnswers: 0,
-    roundsWon: 0,
-    isReady: false,
     isAnswered: false,
     isAnsweredCorrectly: false,
+    isReady: false,
+    points: 0,
+    roundsWon: 0,
 };
 
 export class Players {
@@ -106,11 +106,12 @@ export class Players {
 
     clearQuizData = () => {
         this.list.forEach((player: PlayerType) => {
-            player.points = 0;
-            player.roundsWon = 0;
             player.correctAnswers = 0;
             player.isAnswered = false;
             player.isAnsweredCorrectly = false;
+            player.isReady = false;
+            player.points = 0;
+            player.roundsWon = 0;
         });
     };
 }

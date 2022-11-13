@@ -14,7 +14,9 @@ export const PlayerLobby = ({ isReady }: PlayerLobbyProps) => {
     return (
         <Wrapper>
             <Text>When you're ready click the button below</Text>
-            <Button onClick={handleClick}>Ready</Button>
+            <Button onClick={handleClick} isClicked={isReady}>
+                Ready
+            </Button>
         </Wrapper>
     );
 };

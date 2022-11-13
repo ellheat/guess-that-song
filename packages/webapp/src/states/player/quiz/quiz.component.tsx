@@ -5,7 +5,7 @@ import { socket } from '../../../utils/socket';
 import { PlayerEvents, QuizEvents } from '../../../config/events';
 import { RoundDataType } from '../../game/quiz/round/types';
 import { AnswerType } from '../../game/quiz/types';
-import { RoundWrapper, AnswersWrapper } from './quiz.styles';
+import { RoundWrapper, AnswersWrapper, Content } from './quiz.styles';
 
 type QuizProps = {
     state?: QUIZ_STATES;
@@ -56,7 +56,7 @@ export const Quiz = ({ state = QUIZ_STATES.PreRound, quizAnswers = [], areTitles
         <>
             {quizState === QUIZ_STATES.PreRound && (
                 <RoundWrapper>
-                    <AnswersWrapper>be ready!</AnswersWrapper>
+                    <Content>be ready!</Content>
                 </RoundWrapper>
             )}
             {quizState === QUIZ_STATES.Round && (

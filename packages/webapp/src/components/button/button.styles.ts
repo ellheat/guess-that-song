@@ -41,7 +41,7 @@ const fullSizeButtonStyle = css`
     }
 `;
 
-const primaryBaseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
+const primaryBaseButtonStyle = ({ isClicked }: { isClicked: boolean }) => css`
     background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
     border-radius: 8px;
     border: 0;
@@ -71,7 +71,7 @@ const primaryBaseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
 
     ${Container} {
         align-items: center;
-        background: ${isAnswered ? 'none' : colors.primary};
+        background: ${isClicked ? 'none' : colors.primary};
         border-radius: 6px;
         display: flex;
         justify-content: center;
@@ -80,7 +80,7 @@ const primaryBaseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
     }
 `;
 
-const baseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
+const baseButtonStyle = ({ isClicked }: { isClicked: boolean }) => css`
     box-sizing: border-box;
     cursor: pointer;
     text-decoration: none;
@@ -88,7 +88,7 @@ const baseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
     user-select: none;
 
     ${theme('variant', {
-        [ButtonVariant.Primary]: primaryBaseButtonStyle({ isAnswered }),
+        [ButtonVariant.Primary]: primaryBaseButtonStyle({ isClicked }),
     })};
 
     ${theme('size', {
@@ -99,6 +99,6 @@ const baseButtonStyle = ({ isAnswered }: { isAnswered: boolean }) => css`
     })};
 `;
 
-export const Wrapper = styled.button<ButtonThemeProps & { isAnswered: boolean }>`
-    ${({ isAnswered }) => baseButtonStyle({ isAnswered })}
+export const Wrapper = styled.button<ButtonThemeProps & { isClicked: boolean }>`
+    ${({ isClicked }) => baseButtonStyle({ isClicked })}
 `;

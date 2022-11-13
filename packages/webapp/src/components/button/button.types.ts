@@ -4,7 +4,7 @@ import { DefaultTheme } from 'styled-components';
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     children: ReactNode;
     disabled?: boolean;
-    isAnswered?: boolean;
+    isClicked?: boolean;
     onClick?: () => void;
     size?: ButtonSize;
     variant?: ButtonVariant;
@@ -12,7 +12,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export interface ButtonTheme extends DefaultTheme {
     disabled?: boolean;
-    isAnswered?: boolean;
+    isClicked?: boolean;
     size?: ButtonSize;
     variant?: ButtonVariant;
 }

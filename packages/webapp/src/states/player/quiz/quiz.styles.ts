@@ -12,6 +12,14 @@ export const AnswersWrapper = styled.div`
     padding: 88px 24px;
 `;
 
+export const Content = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const Container = styled.div``;
 
 export const Place = styled.p``;
