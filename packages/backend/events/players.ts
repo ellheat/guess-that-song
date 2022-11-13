@@ -69,9 +69,11 @@ export const playerAnswer = ({ socket, round, players, answers }: playerAnswerPr
             const numberCorrectlyAnswers = playerList.filter((player) => player.isAnsweredCorrectly).length;
             const points = (round.roundTimer + 1) * (playerList.length - numberCorrectlyAnswers);
 
-            return players.setAnswered(id, points);
+            players.setAnswered({ id, points });
+        } else {
+            players.setAnswered({ id, points: 0 });
         }
 
-        players.setAnswered(id, 0);
+        socket.emit(PlayerEvents.Data, players.getPlayer(id));
     });
 };

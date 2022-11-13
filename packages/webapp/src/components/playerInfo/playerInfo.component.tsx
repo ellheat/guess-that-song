@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container } from './playerInfo.styles';
+import { Wrapper, Title, SubTitle } from './playerInfo.styles';
 import { PlayerType } from '../../types';
 import { gray } from '../../theme/colors';
 
@@ -9,5 +9,12 @@ interface PlayerInfoProps {
 }
 
 export const PlayerInfo = ({ data }: PlayerInfoProps) => {
-    return <Container color={data?.color || gray}>{data?.name}</Container>;
+    return (
+        <Wrapper>
+            <Title color={data?.color || gray}>{data?.name}</Title>
+            <SubTitle color={data?.color || gray}>
+                points: {data?.points} | correct: {data?.correctAnswers}
+            </SubTitle>
+        </Wrapper>
+    );
 };

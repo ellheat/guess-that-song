@@ -1,3 +1,5 @@
+import { Socket } from 'socket.io';
+import { PlayerEvents } from '../config/events';
 import { CharacterType } from './characters';
 
 interface PlayerType extends CharacterType {
@@ -72,13 +74,14 @@ export class Players {
         this.areAllReady = false;
     };
 
-    setAnswered = (id: string, points: number) => {
+    setAnswered = ({ id, points }: { id: string; points: number }) => {
         const isAnsweredCorrectly = !!points;
         const player = this.getPlayer(id);
         const playerNewData = Object.assign(player, {
             points: player.points + points,
             isAnswered: true,
             isAnsweredCorrectly,
+            correctAnswers: player.correctAnswers + (isAnsweredCorrectly ? 1 : 0),
         });
 
         if (isAnsweredCorrectly) {
