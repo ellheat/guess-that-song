@@ -22,7 +22,7 @@ export const Answers = ({ answers, onClick, isAnswered, disabled, areTitlesHidde
                     key={title}
                     onClick={onClick ? () => onClick(id) : undefined}
                     disabled={disabled}
-                    isAnswered={isAnswered === id}
+                    isClicked={isAnswered === id}
                 >
                     {areTitlesHidden ? key + 1 : `${key + 1}. ${title}`}
                 </Button>

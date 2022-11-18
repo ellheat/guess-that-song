@@ -1,100 +1,117 @@
-import { playerAnswer } from '../events/players';
+import { Socket } from 'socket.io';
+import { PlayerEvents } from '../config/events';
 import { CharacterType } from './characters';
 
-
 interface PlayerType extends CharacterType {
-	id: string;
-	points: number;
-	correctAnswers: number;
-	roundsWon: number;
-	isReady: boolean;
-	isAnswered: boolean;
+    correctAnswers: number;
+    id: string;
+    isAnswered: boolean;
+    isAnsweredCorrectly: boolean;
+    isReady: boolean;
+    points: number;
+    roundsWon: number;
 }
 
 const PLAYER_DEFAULT_VALUES = {
-	points: 0,
-	correctAnswers: 0,
-	roundsWon: 0,
-	isReady: false,
-	isAnswered: false,
-}
-
-// type PlayerDefaultValuesTypes = keyof typeof PLAYER_DEFAULT_VALUES;
+    correctAnswers: 0,
+    isAnswered: false,
+    isAnsweredCorrectly: false,
+    isReady: false,
+    points: 0,
+    roundsWon: 0,
+};
 
 export class Players {
-	private list;
-	public areAllReady: boolean;
-	public areAllAnswered: boolean;
+    private list;
+    public areAllReady: boolean;
+    public areAllAnswered: boolean;
 
-	constructor() {
-		this.list = new Map<string, PlayerType>();
-		this.areAllReady = false;
-		this.areAllAnswered = false;
-	}
+    constructor() {
+        this.list = new Map<string, PlayerType>();
+        this.areAllReady = false;
+        this.areAllAnswered = false;
+    }
 
-	add = (id: string, character: CharacterType) => {
-		const player = Object.assign({}, {
-			id,
-			...PLAYER_DEFAULT_VALUES,
-			...character
-		});
-		this.list.set(id, player);
-		return player;
-	}
+    add = (id: string, character: CharacterType) => {
+        const player = Object.assign(
+            {},
+            {
+                id,
+                ...PLAYER_DEFAULT_VALUES,
+                ...character,
+            },
+        );
+        this.list.set(id, player);
+        return player;
+    };
 
-	remove = (id: string) => this.list.delete(id);
+    remove = (id: string) => this.list.delete(id);
 
-	getList = (): PlayerType[] => Array.from(this.list.values());
+    getList = (): PlayerType[] => Array.from(this.list.values());
 
-	getPlayer = (id: string): PlayerType => <PlayerType>this.list.get(id);
+    getPlayer = (id: string): PlayerType => <PlayerType>this.list.get(id);
 
-	checkAreAllReady = () => {
-		const list = this.getList();
-		const filteredList = list.filter(({ isReady }) => isReady);
-		this.areAllReady = list.length === filteredList.length;
-	};
+    checkAreAllReady = () => {
+        const list = this.getList();
+        const filteredList = list.filter(({ isReady }) => isReady);
+        this.areAllReady = list.length === filteredList.length;
+    };
 
-	checkAreAllAnswered = () => {
-		const list = this.getList();
-		const filteredList = list.filter(({ isAnswered }) => isAnswered);
-		this.areAllAnswered = list.length === filteredList.length;
-	};
+    checkAreAllAnswered = () => {
+        const list = this.getList();
+        const filteredList = list.filter(({ isAnswered }) => isAnswered);
+        this.areAllAnswered = list.length === filteredList.length;
+    };
 
-	setReady = (id: string) => {
-		const player = Object.assign(this.getPlayer(id), { isReady: true });
-		this.list.set(id, player);
-		return player;
-	}
+    setReady = (id: string) => {
+        const player = Object.assign(this.getPlayer(id), { isReady: true });
+        this.list.set(id, player);
+        return player;
+    };
 
-	setAllUnready = () => {
-		this.list.forEach(player => player.isReady = false);
-		this.areAllReady = false;
-	}
+    setAllUnready = () => {
+        this.list.forEach((player) => (player.isReady = false));
+        this.areAllReady = false;
+    };
 
-	setAnswered = (id: string) => {
-		const player = Object.assign(this.getPlayer(id), { isAnswered: true });
-		this.list.set(id, player);
-		this.checkAreAllAnswered();
-	}
+    setAnswered = ({ id, points }: { id: string; points: number }) => {
+        const isAnsweredCorrectly = !!points;
+        const player = this.getPlayer(id);
+        const playerNewData = Object.assign(player, {
+            points: player.points + points,
+            isAnswered: true,
+            isAnsweredCorrectly,
+            correctAnswers: player.correctAnswers + (isAnsweredCorrectly ? 1 : 0),
+        });
 
-	setAllUnanswered = () => {
-		this.list.forEach(player => player.isAnswered = false);
-		this.areAllAnswered = false;
-	}
+        if (isAnsweredCorrectly) {
+            console.log(
+                `${player.name} has been answered correctly and received: ${points} | total points: ${player.points}`,
+            );
+        } else {
+            console.log(`${player.name} has been answered not correctly | total points: ${player.points}`);
+        }
 
-	addPoints = (id: string) => {
-		const player = this.getPlayer(id);
-		const playerNewData = Object.assign(player, { points: player.points + 1 });
-		this.list.set(id, playerNewData);
-		return playerNewData;
-	}
+        this.list.set(id, playerNewData);
+        this.checkAreAllAnswered();
+    };
 
-	clearQuizData = () => {
-		this.list.forEach((player: PlayerType)  => {
-			player.points = 0;
-			player.roundsWon = 0;
-			player.correctAnswers = 0;
-			player.isAnswered = false;
-		});
-	}
+    setAllUnanswered = () => {
+        this.list.forEach((player) => {
+            player.isAnswered = false;
+            player.isAnsweredCorrectly = false;
+        });
+        this.areAllAnswered = false;
+    };
+
+    clearQuizData = () => {
+        this.list.forEach((player: PlayerType) => {
+            player.correctAnswers = 0;
+            player.isAnswered = false;
+            player.isAnsweredCorrectly = false;
+            player.isReady = false;
+            player.points = 0;
+            player.roundsWon = 0;
+        });
+    };
 }
