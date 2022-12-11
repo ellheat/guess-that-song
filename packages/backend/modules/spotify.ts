@@ -101,20 +101,20 @@ export class Spotify {
             await this.getSpotifyToken();
         }
 
-        const promises = config.playlists.map(async (playlistId: string, index: number) => {
-            this.playlists.push([]);
-            const playlistDetails = await this.fetchPlaylistDetails(playlistId);
-            const playlistItemsCount = playlistDetails.tracks.total;
+        await Promise.all(
+            config.playlists.map(async (playlistId: string, index: number) => {
+                this.playlists.push([]);
+                const playlistDetails = await this.fetchPlaylistDetails(playlistId);
+                const playlistItemsCount = playlistDetails.tracks.total;
 
-            await this.fetchPlaylistAllItems(playlistId, index, playlistItemsCount);
+                await this.fetchPlaylistAllItems(playlistId, index, playlistItemsCount);
 
-            console.log(colors.info(`------------ ${playlistDetails.name} ------------`));
-            console.log(colors.info(`uri: ${playlistDetails.uri}`));
-            console.log(colors.info(`tracks count: ${playlistItemsCount}`));
+                console.log(colors.info(`------------ ${playlistDetails.name} ------------`));
+                console.log(colors.info(`uri: ${playlistDetails.uri}`));
+                console.log(colors.info(`tracks count: ${playlistItemsCount}`));
 
-            console.log(colors.info(`Playlist tracks with preview url: ${this.playlists[index].length}`));
-        });
-
-        await Promise.all(promises);
+                console.log(colors.info(`Playlist tracks with preview url: ${this.playlists[index].length}`));
+            }),
+        );
     };
 }
