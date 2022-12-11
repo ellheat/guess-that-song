@@ -43,7 +43,10 @@ export class Spotify {
 
     getSpotifyToken = async () => {
         await this.spotifyApi.clientCredentialsGrant().then(
-            (data: SpotifyData) => this.spotifyApi.setAccessToken(data.body.access_token),
+            (data: SpotifyData) => {
+                console.log('token', data.body.access_token);
+                this.spotifyApi.setAccessToken(data.body.access_token);
+            },
             (err: object) => console.log('Something went wrong!', err),
         );
     };
@@ -66,7 +69,7 @@ export class Spotify {
             .getPlaylistTracks(playlistId, {
                 offset,
                 limit: 100,
-                fields: 'items',
+                fields: 'items(track(id, name, href, preview_url, artists, album))',
             })
             .then(
                 (data: PlaylistTracksDataType) =>
@@ -98,18 +101,20 @@ export class Spotify {
             await this.getSpotifyToken();
         }
 
-        config.playlists.forEach(async (playlistId: string, index: number) => {
+        const promises = config.playlists.map(async (playlistId: string, index: number) => {
             this.playlists.push([]);
             const playlistDetails = await this.fetchPlaylistDetails(playlistId);
             const playlistItemsCount = playlistDetails.tracks.total;
+
+            await this.fetchPlaylistAllItems(playlistId, index, playlistItemsCount);
 
             console.log(colors.info(`------------ ${playlistDetails.name} ------------`));
             console.log(colors.info(`uri: ${playlistDetails.uri}`));
             console.log(colors.info(`tracks count: ${playlistItemsCount}`));
 
-            await this.fetchPlaylistAllItems(playlistId, index, playlistItemsCount);
-
             console.log(colors.info(`Playlist tracks with preview url: ${this.playlists[index].length}`));
         });
+
+        await Promise.all(promises);
     };
 }
