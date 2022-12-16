@@ -1,9 +1,10 @@
 export type TrackType = {
-  id: string,
-  artist: string,
-  title: string,
-  album: string,
-  url: string,
-  previewUrl: string,
-  isCorrect: boolean
-}
+    album: string;
+    artist: string;
+    duration: number;
+    id: string;
+    isCorrect: boolean;
+    previewUrl: string;
+    title: string;
+    url: string;
+};

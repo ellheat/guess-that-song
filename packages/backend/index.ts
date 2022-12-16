@@ -8,6 +8,7 @@ import { Server, Socket } from 'socket.io';
 import { colors, Ports } from './config';
 import { Characters, Spotify, Quiz } from './modules';
 import { createConnection } from './events';
+import { Answers } from './modules/answers';
 
 const app = express();
 const httpServer = createServer();
@@ -23,6 +24,7 @@ const io = socketIO.listen(app.listen(Ports.Sockets));
 
 const characters = new Characters();
 const spotify = new Spotify();
+const answers = new Answers(spotify);
 
 createConnection(io, characters, spotify);
 
@@ -35,4 +37,5 @@ app.listen(Ports.Base, async () => {
     console.log(colors.success('Characters created'));
     await spotify.fetchPlaylists();
     console.log(colors.success('Playlists have been fetched'));
+    answers.prepare();
 });

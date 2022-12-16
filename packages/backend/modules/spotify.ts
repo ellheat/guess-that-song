@@ -29,23 +29,23 @@ type SpotifyData = {
 
 export class Spotify {
     private playlists: TrackType[][];
-    private spotifyApi;
+    public api;
     private limit;
 
     constructor() {
         this.playlists = [];
         this.limit = 100;
-        this.spotifyApi = new SpotifyWebApi({
+        this.api = new SpotifyWebApi({
             clientId: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
         });
     }
 
     getSpotifyToken = async () => {
-        await this.spotifyApi.clientCredentialsGrant().then(
+        await this.api.clientCredentialsGrant().then(
             (data: SpotifyData) => {
                 console.log('token', data.body.access_token);
-                this.spotifyApi.setAccessToken(data.body.access_token);
+                this.api.setAccessToken(data.body.access_token);
             },
             (err: object) => console.log('Something went wrong!', err),
         );
@@ -54,7 +54,7 @@ export class Spotify {
     getPlaylists = () => this.playlists;
 
     fetchPlaylistDetails = async (playlistId: string): Promise<PlaylistDetails> => {
-        return await this.spotifyApi
+        return await this.api
             .getPlaylist(playlistId, {
                 fields: 'tracks, name, uri, href',
             })
@@ -65,24 +65,23 @@ export class Spotify {
     };
 
     fetchPlaylistItems = (playlistId: string, offset: number) => {
-        return this.spotifyApi
+        return this.api
             .getPlaylistTracks(playlistId, {
                 offset,
                 limit: 100,
-                fields: 'items(track(id, name, href, preview_url, artists, album))',
+                fields: 'items(track(id, name, href, preview_url, artists, album, duration_ms))',
             })
             .then(
                 (data: PlaylistTracksDataType) =>
-                    data.body.items
-                        .map(({ track }: PlaylistItemType) => ({
-                            id: track.id,
-                            artist: track.artists[0].name,
-                            title: track.name,
-                            album: track.album.name,
-                            url: track.href,
-                            previewUrl: track.preview_url,
-                        }))
-                        .filter((item) => item.previewUrl),
+                    data.body.items.map(({ track }: PlaylistItemType) => ({
+                        id: track.id,
+                        artist: track.artists[0].name,
+                        title: track.name,
+                        album: track.album.name,
+                        url: track.href,
+                        previewUrl: track.preview_url,
+                        duration: track.duration_ms,
+                    })),
                 (err: any) => console.log('Something went wrong!', err),
             );
     };
@@ -97,7 +96,7 @@ export class Spotify {
     };
 
     fetchPlaylists = async () => {
-        if (!this.spotifyApi.getAccessToken()) {
+        if (!this.api.getAccessToken()) {
             await this.getSpotifyToken();
         }
 
@@ -113,7 +112,13 @@ export class Spotify {
                 console.log(colors.info(`uri: ${playlistDetails.uri}`));
                 console.log(colors.info(`tracks count: ${playlistItemsCount}`));
 
-                console.log(colors.info(`Playlist tracks with preview url: ${this.playlists[index].length}`));
+                console.log(
+                    colors.info(
+                        `Playlist tracks with preview url: ${
+                            this.playlists[index].filter((item) => item.previewUrl).length
+                        }`,
+                    ),
+                );
             }),
         );
     };
