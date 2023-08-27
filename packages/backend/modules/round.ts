@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { QuizEvents, gameConfig, colors } from '../config';
+import { QuizEvents, config, colors } from '../config';
 import { Answers } from './answers';
 import { Game } from './game';
 import { Players } from './players';
@@ -17,8 +17,8 @@ export class Round {
     constructor(answers: Answers, players: Players, game: Game) {
         this.answers = answers;
         this.roundNumber = DEFAULT_ROUND_NUMBER;
-        this.roundTimer = gameConfig.roundTimer;
-        this.preRoundTimer = gameConfig.preRoundTimer;
+        this.roundTimer = config.roundTimer;
+        this.preRoundTimer = config.preRoundTimer;
         this.intervalBreak = 1000;
         this.game = game;
         this.players = players;
@@ -43,7 +43,7 @@ export class Round {
         const preRoundInterval = setInterval(() => {
             this.emitPreRoundTimer(io);
             if (this.preRoundTimer === 1) {
-                this.preRoundTimer = gameConfig.preRoundTimer;
+                this.preRoundTimer = config.preRoundTimer;
                 clearInterval(preRoundInterval);
                 this.startRound(io, increaseRoundNumber);
                 return;
@@ -61,7 +61,7 @@ export class Round {
         const roundInterval = setInterval(() => {
             this.emitRoundTimer(io);
             if (this.roundTimer === 0 || this.players.areAllAnswered) {
-                this.roundTimer = gameConfig.roundTimer;
+                this.roundTimer = config.roundTimer;
                 clearInterval(roundInterval);
                 this.initNextRound(io, increaseRoundNumber);
                 return;
@@ -72,7 +72,7 @@ export class Round {
     };
 
     initNextRound = (io: Server, increaseRoundNumber: any) => {
-        if (this.roundNumber === gameConfig.maxRounds) {
+        if (this.roundNumber === config.maxRounds) {
             this.game.setLobby();
             this.roundNumber = DEFAULT_ROUND_NUMBER;
             return null;
